@@ -1,0 +1,84 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.admin-main-content {
+  flex-grow: 1;
+  margin-left: 260px; /* Match sidebar width */
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-topbar {
+  height: 72px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 15px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+
+.admin-topbar-left h2 {
+  font-size: 1.15rem;
+  color: #1e293b;
+  margin: 0;
+  font-weight: 600;
+}
+
+.admin-profile-pic {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, var(--primary-gold, #d4af37), #f3e5ab);
+  color: #1a1a1a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.admin-profile-pic:hover {
+  transform: translateY(-2px);
+}
+
+.admin-page-container {
+  padding: 32px;
+  flex-grow: 1;
+  background-color: #f8fafc; /* Sleek light background */
+}
+
+.admin-page-content {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+  min-height: calc(100vh - 136px); /* 100vh - topbar(72px) - paddings(64px) */
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.admin-page-content h2 {
+  margin-top: 0;
+  color: #0f172a;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-page-content p {
+  color: #64748b;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
