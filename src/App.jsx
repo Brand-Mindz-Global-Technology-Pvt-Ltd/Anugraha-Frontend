@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import './App.css';
 import Home from './pages/Home/Home';
+import Contact from './pages/Contact/Contact';
 import logoImg from './assets/Images/logo.png';
 
 // Import images for dropdowns
@@ -111,7 +112,7 @@ const Header = () => (
 
         <div className="nav-item-animate"><a href="#">NEW ARRIVALS</a></div>
         <div className="nav-item-animate"><a href="#">ABOUT US</a></div>
-        <div className="nav-item-animate"><a href="#">CONTACT US</a></div>
+        <div className="nav-item-animate"><a href="/contact">CONTACT US</a></div>
       </nav>
 
       <div className="app-header-icons">
@@ -150,7 +151,7 @@ const Footer = () => (
           <h4 style={{ color: 'var(--primary-gold)', marginBottom: '1.2rem', letterSpacing: '1px', fontSize: '0.78rem', fontWeight: '700' }}>SHOP</h4>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.55rem', fontSize: '0.73rem' }}>
             {['All Jewellery', 'Necklaces', 'Earrings', 'Rings', 'Bangles', 'Pendants', 'Bridal Sets'].map(item => (
-              <li key={item}><a href="#" style={{ color: '#9a8a78', textDecoration: 'none' }}>{item}</a></li>
+              <li key={item}><a href={item === 'Contact Us' ? '/contact' : '#'} style={{ color: '#9a8a78', textDecoration: 'none' }}>{item}</a></li>
             ))}
           </ul>
         </div>
@@ -226,6 +227,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
+        <Route path="contact" element={<Contact />} />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />

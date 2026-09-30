@@ -842,7 +842,7 @@ const SocialAndTestimonial = () => {
   );
 };
 
-const Newsletter = () => {
+export const Newsletter = () => {
   const [isVisible, setIsVisible] = React.useState(false);
   const sectionRef = React.useRef(null);
 
