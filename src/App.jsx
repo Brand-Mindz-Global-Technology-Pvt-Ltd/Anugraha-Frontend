@@ -15,6 +15,7 @@ import {
 import './App.css';
 import Home from './pages/Home/Home';
 import Contact from './pages/Contact/Contact';
+import About from './pages/About/About';
 import logoImg from './assets/Images/logo.png';
 
 // Import images for dropdowns
@@ -111,7 +112,7 @@ const Header = () => (
         </div>
 
         <div className="nav-item-animate"><a href="#">NEW ARRIVALS</a></div>
-        <div className="nav-item-animate"><a href="#">ABOUT US</a></div>
+        <div className="nav-item-animate"><a href="/about">ABOUT US</a></div>
         <div className="nav-item-animate"><a href="/contact">CONTACT US</a></div>
       </nav>
 
@@ -228,6 +229,7 @@ export default function App() {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="about" element={<About />} />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
