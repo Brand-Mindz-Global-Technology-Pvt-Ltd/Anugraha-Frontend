@@ -1405,6 +1405,95 @@
 
 
 /* ============================================================
+   CO-FOUNDER SECTION — Matching Founder Luxury Styling
+   ============================================================ */
+.about-page .about-cofounder-section {
+  padding: 2.8rem 0;
+  background: #fcf9f4;
+  border-top: 1px solid rgba(216, 194, 157, 0.45);
+}
+
+.about-page .cofounder-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+  width: 100%;
+}
+
+.about-page .cofounder-image-col {
+  display: flex;
+}
+
+.about-page .cofounder-image-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(42, 25, 11, 0.12);
+  background: transparent;
+}
+
+.about-page .cofounder-image-wrap img {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  max-height: 460px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-radius: 8px;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.about-page .cofounder-image-wrap:hover img {
+  transform: scale(1.03);
+}
+
+.about-page .cofounder-content-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.about-page .cofounder-eyebrow {
+  color: #b38234;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin: 0 0 0.45rem;
+}
+
+.about-page .cofounder-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.2rem, 3.4vw, 3rem);
+  font-weight: 500;
+  color: #29221c;
+  line-height: 1.15;
+  margin: 0 0 0.65rem;
+}
+
+.about-page .cofounder-title-ornament {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.about-page .cofounder-title-ornament .ornament-line {
+  width: 36px;
+  height: 1px;
+  background: #d8c29d;
+}
+
+.about-page .cofounder-title-ornament .ornament-diamond {
+  color: #b38234;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+
+/* ============================================================
    VALUES SECTION — 4 Open Luxury Cards
    ============================================================ */
 .about-page .about-values-section {
@@ -1804,6 +1893,8 @@
 .about-page .founder-grid.is-visible .founder-image-col { animation: afImageReveal 1s both; }
 .about-page .founder-grid.is-visible .founder-content-col { animation: afRevealUp .9s .18s both; }
 .about-page .founder-grid.is-visible .founder-stats-col { animation: afRevealUp .9s .28s both; }
+.about-page .cofounder-grid.is-visible .cofounder-image-col { animation: afImageReveal 1s both; }
+.about-page .cofounder-grid.is-visible .cofounder-content-col { animation: afRevealUp .9s .18s both; }
 .about-page .values-grid.is-visible .value-interactive-card { animation: afRevealUp .75s both; }
 .about-page .values-grid.is-visible .value-interactive-card:nth-child(2) { animation-delay: .1s; }
 .about-page .values-grid.is-visible .value-interactive-card:nth-child(3) { animation-delay: .2s; }
@@ -1846,6 +1937,21 @@ html:has(.about-page) { scroll-behavior: smooth; }
     padding-top: 1.5rem;
     flex-direction: row;
     justify-content: space-around;
+  }
+  .about-page .cofounder-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+  .about-page .cofounder-image-col {
+    justify-content: center;
+  }
+  .about-page .cofounder-image-wrap {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .about-page .cofounder-content-col {
+    align-items: center;
   }
   .about-page .values-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
   
@@ -1924,6 +2030,11 @@ html:has(.about-page) { scroll-behavior: smooth; }
   .about-page .founder-grid { grid-template-columns: 1fr; }
   .about-page .founder-image-wrap img { height: 360px; min-height: unset; }
   .about-page .founder-stats-col { flex-direction: column; gap: 1.2rem; }
+  .about-page .about-cofounder-section { padding: 2rem 0; }
+  .about-page .cofounder-grid { gap: 1.25rem; }
+  .about-page .cofounder-image-wrap img { height: 320px; min-height: unset; max-height: 360px; }
+  .about-page .cofounder-eyebrow { font-size: 0.68rem; letter-spacing: 0.18em; margin-bottom: 0.3rem; }
+  .about-page .cofounder-name { font-size: 1.85rem; margin-bottom: 0.45rem; }
   .about-page .values-grid { grid-template-columns: 1fr; gap: .75rem; }
   .about-page .value-interactive-card { padding: 1.4rem 1rem; }
 

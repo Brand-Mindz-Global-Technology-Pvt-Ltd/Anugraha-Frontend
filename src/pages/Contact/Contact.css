@@ -27,26 +27,26 @@
   background-size: auto 100%;
   display: flex;
   align-items: center;
-  padding: clamp(1rem, 2.5vw, 1.8rem) clamp(1.2rem, 2.8vw, 2.4rem) clamp(1rem, 2.5vw, 1.8rem) clamp(2.4rem, 4.2vw, 3.8rem);
+  padding: clamp(1rem, 2.5vw, 1.8rem) clamp(1.2rem, 2.8vw, 2.2rem) clamp(1rem, 2.5vw, 1.8rem) clamp(3.5rem, 6vw, 5.5rem);
 }
 
 .contact-hero-content {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  max-width: 380px;
-  opacity: 0;
-  animation: contactHeroFadeUp 500ms cubic-bezier(0.22, 0.6, 0.36, 1) 100ms forwards;
+  gap: 0.4rem;
+  max-width: 420px;
 }
 
 /* Eyebrow: small gold uppercase */
 .contact-hero-eyebrow {
   margin: 0 0 0.1rem;
   color: #9c7333;
-  font-size: clamp(0.58rem, 0.72vw, 0.66rem);
+  font-size: clamp(0.72rem, 0.95vw, 0.88rem);
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+  opacity: 0;
+  animation: chSlideDownFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s forwards;
 }
 
 /* Heading: "Get in Touch" in dark navy/black, "with Anugraha Fashions" in antique gold */
@@ -54,27 +54,33 @@
   margin: 0;
   color: #161a22;
   font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
-  font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+  font-size: clamp(1.85rem, 2.8vw, 2.6rem);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.01em;
+  opacity: 0;
+  animation: chSlideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.3s forwards;
 }
 
 .contact-hero-gold {
   display: block;
   color: #ab7a33;
-  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  font-size: clamp(1.6rem, 2.4vw, 2.3rem);
   font-weight: 400;
   margin-top: 0.12rem;
+  opacity: 0;
+  animation: chSlideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.45s forwards;
 }
 
 /* Description */
 .contact-hero-description {
   margin: 0.15rem 0 0.45rem;
   color: #554d42;
-  font-size: clamp(0.66rem, 0.82vw, 0.76rem);
-  line-height: 1.55;
-  max-width: 345px;
+  font-size: clamp(0.86rem, 1.08vw, 1rem);
+  line-height: 1.65;
+  max-width: 390px;
+  opacity: 0;
+  animation: chSlideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.6s forwards;
 }
 
 /* Dark Navy Button */
@@ -83,10 +89,10 @@
   align-items: center;
   gap: 0.45rem;
   margin-top: 0.3rem;
-  padding: 0.52rem 1.05rem;
+  padding: 0.62rem 1.3rem;
   background: #12151a;
   color: #f7efe4;
-  font-size: 0.6rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -95,6 +101,8 @@
   text-decoration: none;
   width: fit-content;
   white-space: nowrap;
+  opacity: 0;
+  animation: chSlideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.8s forwards;
   transition: background 200ms ease, border-color 200ms ease, transform 180ms ease;
 }
 
@@ -183,10 +191,16 @@
 }
 
 /* ── Keyframes ── */
-@keyframes contactHeroFadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Per-element staggered animations — mirrors Home hero slideDownFade / slideUpFade */
+@keyframes chSlideDownFade {
+  0%   { opacity: 0; transform: translateY(-18px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
+@keyframes chSlideUpFade {
+  0%   { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+/* Keep existing helpers used by right-panel overlay */
 @keyframes contactHeroScaleIn {
   from { transform: scale(1.04); }
   to   { transform: scale(1); }
@@ -205,7 +219,7 @@
   .contact-hero-left {
     width: 100%;
     flex: 1 1 auto;
-    padding: 1.8rem 1.4rem 1.8rem 2rem;
+    padding: 1.8rem 1.4rem 1.8rem 2.2rem;
     background-position: left bottom;
     background-size: auto 65%;
   }
@@ -230,16 +244,22 @@
 
 @media (max-width: 580px) {
   .contact-hero-left {
-    padding: 1.4rem 1.1rem 1.4rem 1.4rem;
+    padding: 1.4rem 1.2rem 1.4rem 1.6rem;
     background-image: none; /* Keep mobile clean */
   }
   .contact-hero h1 {
-    font-size: 1.42rem;
+    font-size: 1.65rem;
   }
   .contact-hero-gold {
-    font-size: 1.2rem;
+    font-size: 1.42rem;
   }
   .contact-hero-description {
+    font-size: 0.86rem;
+  }
+  .contact-hero-eyebrow {
+    font-size: 0.72rem;
+  }
+  .contact-hero-button {
     font-size: 0.72rem;
   }
   .contact-hero-right {
@@ -259,11 +279,12 @@
   .contact-hero-ornament,
   .contact-hero-eyebrow,
   .contact-hero h1,
+  .contact-hero-gold,
   .contact-hero-description,
   .contact-hero-button {
-    animation: none;
-    opacity: 1;
-    transform: none;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
   .contact-hero-model { transition: none; }
   .contact-hero-button,
@@ -676,12 +697,13 @@
   background-image: url('../../assets/Images/contact/contact_banner.png');
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: auto 110%;
+  background-size: auto 105%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(2rem, 4vw, 3rem) clamp(2rem, 3vw, 2.8rem);
+  /* Generous left padding keeps content well clear of the decorative leaf */
+  padding: clamp(2rem, 4vw, 3rem) clamp(2rem, 3vw, 2.8rem) clamp(2rem, 4vw, 3rem) clamp(5rem, 10vw, 7rem);
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 600ms cubic-bezier(0.22, 0.6, 0.36, 1) 80ms, transform 600ms cubic-bezier(0.22, 0.6, 0.36, 1) 80ms;
@@ -703,6 +725,8 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
+  /* Extra left clearance in case leaf bleeds through at edge viewports */
+  padding-left: 0.5rem;
 }
 
 .contact-faq-heading-content .contact-eyebrow {
@@ -1211,8 +1235,11 @@
     min-height: unset;
   }
   .contact-faq-left {
-    padding: 2rem 1.8rem;
+    /* On tablet, stack is single-column; shrink leaf and push content inward */
+    padding: 2.2rem 2rem 2.2rem 3rem;
     min-height: 200px;
+    background-size: auto 90%;
+    background-position: left center;
   }
   .contact-faq-right {
     border-left: none;
@@ -1263,7 +1290,10 @@
 
   /* FAQ mobile */
   .contact-faq-left {
-    padding: 1.8rem 1.2rem;
+    /* On mobile, reduce leaf size so it's decorative not obstructive */
+    padding: 2rem 1.4rem 2rem 2.2rem;
+    background-size: auto 70%;
+    background-position: left bottom;
   }
   .contact-faq-left-botanical-top,
   .contact-faq-left-botanical-btm {
@@ -1275,7 +1305,7 @@
   .contact-faq-right {
     padding: 1.2rem 1rem;
   }
-  .contact-faq-question { padding: 0.85rem 0.4rem 0.85rem 0; }
+  .contact-faq-question { padding: 0.85rem 0.7rem 0.85rem 0.9rem; }
   .contact-faq-answer.is-open,
   .contact-faq-item.is-open .contact-faq-answer { padding: 0 0 0.85rem; }
   .contact-faq-answer p { padding-left: 1.2rem; }

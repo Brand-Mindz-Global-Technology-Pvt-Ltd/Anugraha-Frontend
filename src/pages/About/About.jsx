@@ -8,6 +8,7 @@ import whoWeAreImg from '../../assets/Images/about/who_we_are_necklace.jpg';
 import heritageMainImg from '../../assets/Images/about/ourstory.png';
 import heritageFloatImg from '../../assets/Images/about/heritage_necklace.jpg';
 import founderImg from '../../assets/Images/about/Elegant Indian Saree Portrait.png';
+import coFounderImg from '../../assets/Images/about/hero_about_woman.jpg';
 import ctaBgImg from '../../assets/Images/about/Emerald Elegance with Ornate Gold Bangles.png';
 
 // Instagram Gallery Images (3 authentic About assets reused across 6 cards)
@@ -40,6 +41,7 @@ export default function About() {
   const [timelineRef, timelineVisible] = useInView(0.2);
   const [missionRef, missionVisible] = useInView(0.2);
   const [founderRef, founderVisible] = useInView(0.2);
+  const [coFounderRef, coFounderVisible] = useInView(0.2);
   const [valuesRef, valuesVisible] = useInView(0.15);
   const [ctaRef, ctaVisible] = useInView(0.15);
   const [instaRef, instaVisible] = useInView(0.15);
@@ -299,6 +301,34 @@ export default function About() {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ── CO-FOUNDER SECTION ── */}
+      <section className="about-cofounder-section" ref={coFounderRef}>
+        <div className="container">
+          <div className={`cofounder-grid ${coFounderVisible ? 'is-visible' : ''}`}>
+            {/* LEFT: Portrait */}
+            <div className="cofounder-image-col">
+              <div className="cofounder-image-wrap">
+                <img
+                  src={coFounderImg}
+                  alt="Bhavana — Co-Founder, Anugraha Fashions"
+                />
+              </div>
+            </div>
+
+            {/* RIGHT: Heading & Name */}
+            <div className="cofounder-content-col">
+              <p className="cofounder-eyebrow">ABOUT OUR CO-FOUNDER</p>
+              <h2 className="cofounder-name">Bhavana</h2>
+              <div className="cofounder-title-ornament" aria-hidden="true">
+                <span className="ornament-line"></span>
+                <span className="ornament-diamond">✦</span>
+                <span className="ornament-line"></span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
