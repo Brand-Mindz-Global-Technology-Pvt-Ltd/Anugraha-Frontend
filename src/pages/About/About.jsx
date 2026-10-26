@@ -41,7 +41,6 @@ export default function About() {
   const [timelineRef, timelineVisible] = useInView(0.2);
   const [missionRef, missionVisible] = useInView(0.2);
   const [founderRef, founderVisible] = useInView(0.2);
-  const [coFounderRef, coFounderVisible] = useInView(0.2);
   const [valuesRef, valuesVisible] = useInView(0.15);
   const [ctaRef, ctaVisible] = useInView(0.15);
   const [instaRef, instaVisible] = useInView(0.15);
@@ -59,7 +58,7 @@ export default function About() {
 
   return (
     <main className="about-page">
-      
+
       {/* ── HERO ── */}
       <section className="about-hero">
         {/* Full-width background: home_herobanner.png spans across the entire hero */}
@@ -93,10 +92,10 @@ export default function About() {
         <div className="about-hero-aside animate-fade-up delay-4">
           <span className="about-hero-aside-rule" aria-hidden="true"></span>
           <p className="about-hero-aside-text">
-            MORE<br/>THAN<br/>JEWELLERY
+            MORE<br />THAN<br />JEWELLERY
           </p>
           <p className="about-hero-aside-sub">
-            A LEGACY<br/>OF EMOTIONS
+            A LEGACY<br />OF EMOTIONS
           </p>
         </div>
       </section>
@@ -152,22 +151,22 @@ export default function About() {
           {/* Subtle Corner Mandala Watermarks */}
           <div className="mission-corner-mandala mission-corner-left" aria-hidden="true">
             <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0C40 20 60 60 80 80C100 100 140 120 160 160" stroke="#d4af37" strokeWidth="1" strokeDasharray="3 3"/>
-              <path d="M0 40C30 50 50 80 80 110C110 140 140 150 160 160" stroke="#d4af37" strokeWidth="0.8"/>
-              <circle cx="80" cy="80" r="30" stroke="#d4af37" strokeWidth="0.7"/>
-              <circle cx="80" cy="80" r="15" stroke="#d4af37" strokeWidth="0.7"/>
-              <path d="M20 0C50 30 70 70 80 120" stroke="#d4af37" strokeWidth="0.6"/>
-              <path d="M0 20C30 50 70 70 120 80" stroke="#d4af37" strokeWidth="0.6"/>
+              <path d="M0 0C40 20 60 60 80 80C100 100 140 120 160 160" stroke="#d4af37" strokeWidth="1" strokeDasharray="3 3" />
+              <path d="M0 40C30 50 50 80 80 110C110 140 140 150 160 160" stroke="#d4af37" strokeWidth="0.8" />
+              <circle cx="80" cy="80" r="30" stroke="#d4af37" strokeWidth="0.7" />
+              <circle cx="80" cy="80" r="15" stroke="#d4af37" strokeWidth="0.7" />
+              <path d="M20 0C50 30 70 70 80 120" stroke="#d4af37" strokeWidth="0.6" />
+              <path d="M0 20C30 50 70 70 120 80" stroke="#d4af37" strokeWidth="0.6" />
             </svg>
           </div>
           <div className="mission-corner-mandala mission-corner-right" aria-hidden="true">
             <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M160 0C120 20 100 60 80 80C60 100 20 120 0 160" stroke="#d4af37" strokeWidth="1" strokeDasharray="3 3"/>
-              <path d="M160 40C130 50 110 80 80 110C50 140 20 150 0 160" stroke="#d4af37" strokeWidth="0.8"/>
-              <circle cx="80" cy="80" r="30" stroke="#d4af37" strokeWidth="0.7"/>
-              <circle cx="80" cy="80" r="15" stroke="#d4af37" strokeWidth="0.7"/>
-              <path d="M140 0C110 30 90 70 80 120" stroke="#d4af37" strokeWidth="0.6"/>
-              <path d="M160 20C130 50 90 70 40 80" stroke="#d4af37" strokeWidth="0.6"/>
+              <path d="M160 0C120 20 100 60 80 80C60 100 20 120 0 160" stroke="#d4af37" strokeWidth="1" strokeDasharray="3 3" />
+              <path d="M160 40C130 50 110 80 80 110C50 140 20 150 0 160" stroke="#d4af37" strokeWidth="0.8" />
+              <circle cx="80" cy="80" r="30" stroke="#d4af37" strokeWidth="0.7" />
+              <circle cx="80" cy="80" r="15" stroke="#d4af37" strokeWidth="0.7" />
+              <path d="M140 0C110 30 90 70 80 120" stroke="#d4af37" strokeWidth="0.6" />
+              <path d="M160 20C130 50 90 70 40 80" stroke="#d4af37" strokeWidth="0.6" />
             </svg>
           </div>
 
@@ -301,15 +300,10 @@ export default function About() {
               </div>
             </div>
 
-          </div>
-        </div>
-      </section>
+            {/* DIVIDER BETWEEN FOUNDER & CO-FOUNDER */}
+            <div className="cofounder-divider" aria-hidden="true" />
 
-      {/* ── CO-FOUNDER SECTION ── */}
-      <section className="about-cofounder-section" ref={coFounderRef}>
-        <div className="container">
-          <div className={`cofounder-grid ${coFounderVisible ? 'is-visible' : ''}`}>
-            {/* LEFT: Portrait */}
+            {/* CO-FOUNDER: Portrait */}
             <div className="cofounder-image-col">
               <div className="cofounder-image-wrap">
                 <img
@@ -319,7 +313,7 @@ export default function About() {
               </div>
             </div>
 
-            {/* RIGHT: Heading & Name */}
+            {/* CO-FOUNDER: Heading & Name */}
             <div className="cofounder-content-col">
               <p className="cofounder-eyebrow">ABOUT OUR CO-FOUNDER</p>
               <h2 className="cofounder-name">Bhavana</h2>
@@ -329,6 +323,7 @@ export default function About() {
                 <span className="ornament-line"></span>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -353,8 +348,8 @@ export default function About() {
               <div className="value-card-inner">
                 <div className="value-icon-box">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                    <path d="M9 12l2 2 4-4"/>
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="M9 12l2 2 4-4" />
                   </svg>
                 </div>
                 <h4>AUTHENTICITY</h4>
@@ -367,11 +362,11 @@ export default function About() {
               <div className="value-card-inner">
                 <div className="value-icon-box">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-                    <circle cx="6" cy="6" r="3"/>
-                    <circle cx="6" cy="18" r="3"/>
-                    <line x1="20" y1="4" x2="8.12" y2="15.88"/>
-                    <line x1="14.47" y1="14.48" x2="20" y2="20"/>
-                    <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+                    <circle cx="6" cy="6" r="3" />
+                    <circle cx="6" cy="18" r="3" />
+                    <line x1="20" y1="4" x2="8.12" y2="15.88" />
+                    <line x1="14.47" y1="14.48" x2="20" y2="20" />
+                    <line x1="8.12" y1="8.12" x2="12" y2="12" />
                   </svg>
                 </div>
                 <h4>CRAFTSMANSHIP</h4>
@@ -384,10 +379,10 @@ export default function About() {
               <div className="value-card-inner">
                 <div className="value-icon-box">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 </div>
                 <h4>CUSTOMER DELIGHT</h4>
@@ -400,11 +395,11 @@ export default function About() {
               <div className="value-card-inner">
                 <div className="value-icon-box">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-                    <path d="M12 21c0-4.5 3-7.5 6-8-1 4-3.5 6.5-6 8z"/>
-                    <path d="M12 21c0-4.5-3-7.5-6-8 1 4 3.5 6.5 6 8z"/>
-                    <path d="M12 21c-2-5-1.5-11 0-15 1.5 4 2 10 0 15z"/>
-                    <path d="M12 21c3-2 8-3.5 10-1-2-3.5-5.5-5.5-10-5"/>
-                    <path d="M12 21c-3-2-8-3.5-10-1 2-3.5 5.5-5.5 10-5"/>
+                    <path d="M12 21c0-4.5 3-7.5 6-8-1 4-3.5 6.5-6 8z" />
+                    <path d="M12 21c0-4.5-3-7.5-6-8 1 4 3.5 6.5 6 8z" />
+                    <path d="M12 21c-2-5-1.5-11 0-15 1.5 4 2 10 0 15z" />
+                    <path d="M12 21c3-2 8-3.5 10-1-2-3.5-5.5-5.5-10-5" />
+                    <path d="M12 21c-3-2-8-3.5-10-1 2-3.5 5.5-5.5 10-5" />
                   </svg>
                 </div>
                 <h4>TRADITION WITH INNOVATION</h4>
@@ -418,7 +413,7 @@ export default function About() {
 
       {/* ── SECTION ONE: EMERALD GREEN CTA BANNER ── */}
       <section className="about-cta-section" ref={ctaRef}>
-        <div 
+        <div
           className={`about-cta-cinematic ${ctaVisible ? 'is-visible' : ''}`}
           style={{ backgroundImage: `url(${ctaBgImg})` }}
         >
