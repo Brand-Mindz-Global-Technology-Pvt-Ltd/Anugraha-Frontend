@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route, Outlet, Link, useLocation } from 'react-router-dom';
 import AdminLayout from './pages/Admin/AdminLayout';
 import Dashboard from './pages/Admin/Dashboard';
 import Category from './pages/Admin/Category';
@@ -10,7 +10,8 @@ import Orders from './pages/Admin/Orders';
 import OfflineOrders from './pages/Admin/OfflineOrders';
 import {
   Truck, ShieldCheck, RefreshCw, Search, User, Heart, ShoppingBag,
-  ChevronRight, ChevronLeft, Star, Phone, Mail, CheckCircle, MapPin, Menu
+  ChevronRight, ChevronLeft, Star, Phone, Mail, CheckCircle, MapPin, Menu,
+  X, ChevronDown
 } from 'lucide-react';
 import './App.css';
 import Home from './pages/Home/Home';
@@ -58,76 +59,266 @@ const TopBar = () => {
   );
 };
 
-const Header = () => (
-  <header className="app-header">
-    <div className="container app-header-inner">
-      <div className="app-logo-area">
-        <button className="mobile-menu-btn"><Menu size={24} /></button>
-        <LogoIcon />
-      </div>
+const Header = () => {
+  const [isMobileOpen, setIsMobileOpen] = React.useState(false);
+  const [openSubmenu, setOpenSubmenu] = React.useState(null);
+  const location = useLocation();
 
-      <nav className="app-nav">
-        <div className="nav-item-animate"><a href="#" className="active">HOME</a></div>
-        
-        {/* SHOP Dropdown */}
-        <div className="nav-item nav-item-animate">
-          <a href="#">SHOP ▾</a>
-          <div className="dropdown-menu">
-            <div className="dropdown-card">
-              <div className="dropdown-card-img-wrapper"><img src={necklaceImg} alt="Necklaces" /></div>
-              <h4>NECKLACES</h4>
-            </div>
-            <div className="dropdown-card">
-              <div className="dropdown-card-img-wrapper"><img src={earringImg} alt="Earrings" /></div>
-              <h4>EARRINGS</h4>
-            </div>
-            <div className="dropdown-card">
-              <div className="dropdown-card-img-wrapper"><img src={bangleImg} alt="Bangles" /></div>
-              <h4>BANGLES</h4>
-            </div>
-            <div className="dropdown-card">
-              <div className="dropdown-card-img-wrapper"><img src={ringImg} alt="Rings" /></div>
-              <h4>RINGS</h4>
+  // Close mobile menu on route change
+  React.useEffect(() => {
+    setIsMobileOpen(false);
+  }, [location.pathname]);
+
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileOpen]);
+
+  // Close on Escape key
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setIsMobileOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const toggleSubmenu = (menu) => {
+    setOpenSubmenu((prev) => (prev === menu ? null : menu));
+  };
+
+  const closeMenu = () => {
+    setIsMobileOpen(false);
+  };
+
+  return (
+    <header className="app-header">
+      <div className="container app-header-inner">
+        <div className="app-logo-area">
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setIsMobileOpen((prev) => !prev)}
+            aria-label={isMobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isMobileOpen}
+          >
+            {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+          <Link to="/" onClick={closeMenu} style={{ textDecoration: 'none' }}>
+            <LogoIcon />
+          </Link>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="app-nav">
+          <div className="nav-item-animate">
+            <Link to="/" className={location.pathname === '/' ? 'active' : ''}>HOME</Link>
+          </div>
+          
+          {/* SHOP Dropdown */}
+          <div className="nav-item nav-item-animate">
+            <a href="#">SHOP ▾</a>
+            <div className="dropdown-menu">
+              <div className="dropdown-card">
+                <div className="dropdown-card-img-wrapper"><img src={necklaceImg} alt="Necklaces" /></div>
+                <h4>NECKLACES</h4>
+              </div>
+              <div className="dropdown-card">
+                <div className="dropdown-card-img-wrapper"><img src={earringImg} alt="Earrings" /></div>
+                <h4>EARRINGS</h4>
+              </div>
+              <div className="dropdown-card">
+                <div className="dropdown-card-img-wrapper"><img src={bangleImg} alt="Bangles" /></div>
+                <h4>BANGLES</h4>
+              </div>
+              <div className="dropdown-card">
+                <div className="dropdown-card-img-wrapper"><img src={ringImg} alt="Rings" /></div>
+                <h4>RINGS</h4>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* COLLECTIONS Dropdown */}
-        <div className="nav-item nav-item-animate">
-          <a href="#">COLLECTIONS ▾</a>
-          <div className="dropdown-menu">
-            <div className="dropdown-card">
-              <div className="dropdown-card-img-wrapper"><img src={bridalImg} alt="Bridal" /></div>
-              <h4>BRIDAL</h4>
-            </div>
-            <div className="dropdown-card">
-              <div className="dropdown-card-img-wrapper" style={{ backgroundColor: '#2a1a1a' }}><img src={necklaceImg} alt="Festive" style={{ mixBlendMode: 'luminosity' }} /></div>
-              <h4>FESTIVE</h4>
-            </div>
-            <div className="dropdown-card">
-              <div className="dropdown-card-img-wrapper" style={{ backgroundColor: '#1a2a2a' }}><img src={bangleImg} alt="Everyday" style={{ mixBlendMode: 'luminosity' }} /></div>
-              <h4>EVERYDAY</h4>
+          {/* COLLECTIONS Dropdown */}
+          <div className="nav-item nav-item-animate">
+            <a href="#">COLLECTIONS ▾</a>
+            <div className="dropdown-menu">
+              <div className="dropdown-card">
+                <div className="dropdown-card-img-wrapper"><img src={bridalImg} alt="Bridal" /></div>
+                <h4>BRIDAL</h4>
+              </div>
+              <div className="dropdown-card">
+                <div className="dropdown-card-img-wrapper" style={{ backgroundColor: '#2a1a1a' }}>
+                  <img src={necklaceImg} alt="Festive" style={{ mixBlendMode: 'luminosity' }} />
+                </div>
+                <h4>FESTIVE</h4>
+              </div>
+              <div className="dropdown-card">
+                <div className="dropdown-card-img-wrapper" style={{ backgroundColor: '#1a2a2a' }}>
+                  <img src={bangleImg} alt="Everyday" style={{ mixBlendMode: 'luminosity' }} />
+                </div>
+                <h4>EVERYDAY</h4>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="nav-item-animate"><a href="#">NEW ARRIVALS</a></div>
-        <div className="nav-item-animate"><a href="/about">ABOUT US</a></div>
-        <div className="nav-item-animate"><a href="/contact">CONTACT US</a></div>
-      </nav>
+          <div className="nav-item-animate"><a href="#">NEW ARRIVALS</a></div>
+          <div className="nav-item-animate">
+            <Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>ABOUT US</Link>
+          </div>
+          <div className="nav-item-animate">
+            <Link to="/contact" className={location.pathname === '/contact' ? 'active' : ''}>CONTACT US</Link>
+          </div>
+        </nav>
 
-      <div className="app-header-icons">
-        <div className="header-icon-animate"><Search size={18} className="search-icon" style={{ cursor: 'pointer' }} /></div>
-        <div className="header-icon-animate"><User size={18} style={{ cursor: 'pointer' }} /></div>
-        <div className="header-icon-animate"><Heart size={18} style={{ cursor: 'pointer' }} /></div>
-        <div className="header-icon-animate" style={{ position: 'relative', cursor: 'pointer' }}>
-          <ShoppingBag size={18} />
-          <span style={{ position: 'absolute', top: '-6px', right: '-8px', backgroundColor: 'var(--primary-gold)', color: '#111', fontSize: '0.6rem', fontWeight: 'bold', width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>0</span>
+        <div className="app-header-icons">
+          <div className="header-icon-animate"><Search size={18} className="search-icon" style={{ cursor: 'pointer' }} /></div>
+          <div className="header-icon-animate"><User size={18} style={{ cursor: 'pointer' }} /></div>
+          <div className="header-icon-animate"><Heart size={18} style={{ cursor: 'pointer' }} /></div>
+          <div className="header-icon-animate" style={{ position: 'relative', cursor: 'pointer' }}>
+            <ShoppingBag size={18} />
+            <span style={{ position: 'absolute', top: '-6px', right: '-8px', backgroundColor: 'var(--primary-gold)', color: '#111', fontSize: '0.6rem', fontWeight: 'bold', width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>0</span>
+          </div>
         </div>
       </div>
-    </div>
-  </header>
-);
+
+      {/* Mobile Navigation Backdrop Overlay */}
+      <div
+        className={`mobile-nav-backdrop ${isMobileOpen ? 'is-open' : ''}`}
+        onClick={closeMenu}
+        aria-hidden="true"
+      />
+
+      {/* Mobile Navigation Drawer */}
+      <div
+        className={`mobile-nav-drawer ${isMobileOpen ? 'is-open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation"
+      >
+        <div className="mobile-nav-header">
+          <div className="mobile-nav-logo">
+            <LogoIcon />
+          </div>
+          <button
+            className="mobile-nav-close-btn"
+            onClick={closeMenu}
+            aria-label="Close menu"
+          >
+            <X size={22} />
+          </button>
+        </div>
+
+        <nav className="mobile-nav-links">
+          <Link
+            to="/"
+            className={`mobile-nav-link ${location.pathname === '/' ? 'active' : ''}`}
+            onClick={closeMenu}
+          >
+            HOME
+          </Link>
+
+          {/* Collapsible SHOP Submenu */}
+          <div className="mobile-nav-group">
+            <button
+              className={`mobile-nav-link mobile-nav-accordion-btn ${openSubmenu === 'shop' ? 'is-open' : ''}`}
+              onClick={() => toggleSubmenu('shop')}
+              type="button"
+            >
+              <span>SHOP</span>
+              <ChevronDown size={16} className={`mobile-nav-chevron ${openSubmenu === 'shop' ? 'is-open' : ''}`} />
+            </button>
+            {openSubmenu === 'shop' && (
+              <div className="mobile-nav-sublinks">
+                <Link to="/" onClick={closeMenu} className="mobile-nav-sublink">
+                  <img src={necklaceImg} alt="" className="mobile-nav-sublink-thumb" />
+                  <span>Necklaces</span>
+                </Link>
+                <Link to="/" onClick={closeMenu} className="mobile-nav-sublink">
+                  <img src={earringImg} alt="" className="mobile-nav-sublink-thumb" />
+                  <span>Earrings</span>
+                </Link>
+                <Link to="/" onClick={closeMenu} className="mobile-nav-sublink">
+                  <img src={bangleImg} alt="" className="mobile-nav-sublink-thumb" />
+                  <span>Bangles</span>
+                </Link>
+                <Link to="/" onClick={closeMenu} className="mobile-nav-sublink">
+                  <img src={ringImg} alt="" className="mobile-nav-sublink-thumb" />
+                  <span>Rings</span>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Collapsible COLLECTIONS Submenu */}
+          <div className="mobile-nav-group">
+            <button
+              className={`mobile-nav-link mobile-nav-accordion-btn ${openSubmenu === 'collections' ? 'is-open' : ''}`}
+              onClick={() => toggleSubmenu('collections')}
+              type="button"
+            >
+              <span>COLLECTIONS</span>
+              <ChevronDown size={16} className={`mobile-nav-chevron ${openSubmenu === 'collections' ? 'is-open' : ''}`} />
+            </button>
+            {openSubmenu === 'collections' && (
+              <div className="mobile-nav-sublinks">
+                <Link to="/" onClick={closeMenu} className="mobile-nav-sublink">
+                  <img src={bridalImg} alt="" className="mobile-nav-sublink-thumb" />
+                  <span>Bridal</span>
+                </Link>
+                <Link to="/" onClick={closeMenu} className="mobile-nav-sublink">
+                  <img src={necklaceImg} alt="" className="mobile-nav-sublink-thumb" style={{ mixBlendMode: 'luminosity' }} />
+                  <span>Festive</span>
+                </Link>
+                <Link to="/" onClick={closeMenu} className="mobile-nav-sublink">
+                  <img src={bangleImg} alt="" className="mobile-nav-sublink-thumb" style={{ mixBlendMode: 'luminosity' }} />
+                  <span>Everyday</span>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <Link
+            to="/"
+            className="mobile-nav-link"
+            onClick={closeMenu}
+          >
+            NEW ARRIVALS
+          </Link>
+
+          <Link
+            to="/about"
+            className={`mobile-nav-link ${location.pathname === '/about' ? 'active' : ''}`}
+            onClick={closeMenu}
+          >
+            ABOUT US
+          </Link>
+
+          <Link
+            to="/contact"
+            className={`mobile-nav-link ${location.pathname === '/contact' ? 'active' : ''}`}
+            onClick={closeMenu}
+          >
+            CONTACT US
+          </Link>
+        </nav>
+
+        <div className="mobile-nav-footer">
+          <p className="mobile-nav-tagline">Timeless jewellery crafted with passion &amp; purity.</p>
+          <div className="mobile-nav-contact-info">
+            <a href="tel:+919876543210">+91 98765 43210</a>
+            <a href="mailto:support@anugrahafashions.com">support@anugrahafashions.com</a>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
 
 const Footer = () => (
   <footer className="app-footer">
