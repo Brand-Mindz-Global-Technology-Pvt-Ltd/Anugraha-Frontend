@@ -227,14 +227,25 @@ function Contact() {
 
       <section ref={locationRef} className={`contact-location container${isLocationVisible ? ' is-visible' : ''}`}>
         <div className="contact-location-copy">
-          <p className="contact-eyebrow">FIND US HERE</p>
-          <h2>Our Store Location</h2>
-          <p>Visit our flagship store in Chennai to explore our exquisite collections and find the perfect piece with us.</p>
-          <div className="contact-address">
-            <MapPin size={21} aria-hidden="true" />
-            <p><strong>Anugraha Fashions</strong><br />123, Anna Salai<br />Chennai, Tamil Nadu - 600001, India</p>
+          <div className="contact-location-botanical" aria-hidden="true" />
+          <div className="contact-location-content">
+            <p className="contact-eyebrow">FIND US HERE</p>
+            <h2>Our Store Location</h2>
+            <div className="contact-location-ornament" aria-hidden="true">
+              <span className="contact-loc-line" />
+              <span className="contact-loc-lotus">🪷</span>
+              <span className="contact-loc-line" />
+            </div>
+            <p className="contact-location-desc">Visit our flagship store in Chennai to explore our exquisite collections and find the perfect piece with us.</p>
+            <div className="contact-location-rule" aria-hidden="true" />
+            <div className="contact-address">
+              <div className="contact-address-icon-wrap" aria-hidden="true">
+                <MapPin size={18} />
+              </div>
+              <p><strong>Anugraha Fashions</strong><br />123, Anna Salai<br />Chennai, Tamil Nadu - 600001, India</p>
+            </div>
+            <a className="contact-directions" href="https://maps.google.com/?q=123+Anna+Salai+Chennai" target="_blank" rel="noreferrer">GET DIRECTIONS <ArrowUpRight size={14} /></a>
           </div>
-          <a className="contact-directions" href="https://maps.google.com/?q=123+Anna+Salai+Chennai" target="_blank" rel="noreferrer">GET DIRECTIONS <ArrowUpRight size={14} /></a>
         </div>
         <div className="contact-map-wrap">
           <iframe

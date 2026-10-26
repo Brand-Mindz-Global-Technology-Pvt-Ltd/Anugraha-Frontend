@@ -657,34 +657,280 @@
   32% { opacity: 0; }
 }
 
-/* ── CONTACT LOCATION ── */
+/* ── CONTACT LOCATION (Premium Store Location Presentation) ── */
 .contact-location {
   display: grid;
-  grid-template-columns: minmax(230px, 0.42fr) minmax(0, 1fr);
-  gap: 1.4rem;
-  padding-top: 0.6rem;
-  padding-bottom: 2.3rem;
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 600ms cubic-bezier(0.22, 0.6, 0.36, 1), transform 600ms cubic-bezier(0.22, 0.6, 0.36, 1);
+  grid-template-columns: minmax(310px, 0.44fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  padding-top: 0.8rem;
+  padding-bottom: 2.6rem;
+  align-items: stretch;
 }
 
-.contact-location.is-visible {
+/* Luxury card / frame around store information area */
+.contact-location-copy {
+  position: relative;
+  background: #fbf8f2;
+  border: 1px solid rgba(206, 175, 102, 0.45);
+  border-radius: 6px;
+  padding: clamp(1.6rem, 2.4vw, 2.2rem) clamp(1.4rem, 2vw, 2rem);
+  box-shadow: 0 4px 22px rgba(55, 40, 20, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 600ms cubic-bezier(0.22, 0.6, 0.36, 1), transform 600ms cubic-bezier(0.22, 0.6, 0.36, 1), border-color 240ms ease, box-shadow 240ms ease;
+}
+
+.contact-location.is-visible .contact-location-copy {
   opacity: 1;
   transform: translateY(0);
 }
 
-.contact-location-copy { padding: 1rem 0.4rem 0.5rem; }
-.contact-location h2 { margin-top: 0.45rem; font-size: clamp(1.55rem, 2.5vw, 2.1rem); color: #161c24; font-family: var(--font-serif); }
-.contact-location-copy > p:not(.contact-eyebrow) { max-width: 310px; margin: 0.75rem 0 1rem; color: #70665d; font-size: 0.76rem; line-height: 1.7; }
-.contact-address { display: flex; gap: 0.65rem; align-items: flex-start; color: #906522; }
-.contact-address p { color: #4d443a; font-size: 0.72rem; line-height: 1.65; }
-.contact-address strong { color: #30271f; }
-.contact-directions { min-height: 34px; margin-top: 0.85rem; }
-.contact-map-wrap { position: relative; min-height: 250px; border: 1px solid #ddd4c6; background: #e8e8df; border-radius: 4px; overflow: hidden; }
-.contact-map-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: saturate(0.72); }
-.contact-map-label { position: absolute; left: 0.8rem; top: 0.8rem; display: flex; align-items: center; gap: 0.4rem; padding: 0.55rem 0.7rem; background: #fffdf8; color: #42362b; box-shadow: 0 2px 9px rgba(0,0,0,0.12); font-size: 0.65rem; font-weight: 700; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 2px; }
-.contact-map-label svg { color: #a17735; }
+.contact-location-copy:hover {
+  border-color: rgba(206, 175, 102, 0.72);
+  box-shadow: 0 6px 28px rgba(55, 40, 20, 0.08);
+}
+
+/* Subtle gold botanical watermark in the card corner */
+.contact-location-botanical {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 95px;
+  height: 95px;
+  background-image: url('../../assets/Images/contact/contact-botanical.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(90deg);
+}
+
+.contact-location-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Eyebrow */
+.contact-location-copy .contact-eyebrow {
+  margin: 0;
+  color: #9c7333;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Heading */
+.contact-location h2 {
+  margin-top: 0.35rem;
+  margin-bottom: 0.4rem;
+  font-size: clamp(1.55rem, 2.3vw, 2.05rem);
+  color: #161c24;
+  font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+
+/* Ornamental accent under heading — matching website style */
+.contact-location-ornament {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.1rem 0 0.85rem;
+  color: #a88344;
+}
+
+.contact-loc-line {
+  width: 24px;
+  height: 1px;
+  background: rgba(196, 163, 102, 0.55);
+}
+
+.contact-loc-lotus {
+  font-size: 0.82rem;
+  line-height: 1;
+  color: #9c7333;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
+}
+
+/* Supporting description */
+.contact-location-desc {
+  color: #63584d;
+  font-size: 0.78rem;
+  line-height: 1.68;
+  margin: 0 0 1.05rem;
+  max-width: 340px;
+}
+
+/* Thin antique-gold divider rule */
+.contact-location-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, rgba(206, 175, 102, 0.4), rgba(206, 175, 102, 0.1));
+  margin: 0 0 1.1rem;
+}
+
+/* Address container with gold icon treatment */
+.contact-address {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  color: #906522;
+  margin-bottom: 1.15rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 550ms cubic-bezier(0.22, 0.6, 0.36, 1) 150ms, transform 550ms cubic-bezier(0.22, 0.6, 0.36, 1) 150ms;
+}
+
+.contact-location.is-visible .contact-address {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Small gold location icon badge */
+.contact-address-icon-wrap {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbf4e8 0%, #ede0ca 100%);
+  border: 1px solid rgba(196, 158, 86, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9c7333;
+  box-shadow: 0 2px 6px rgba(160, 120, 50, 0.1);
+  transition: transform 200ms ease, border-color 200ms ease;
+  margin-top: 0.1rem;
+}
+
+.contact-location-copy:hover .contact-address-icon-wrap {
+  transform: scale(1.05);
+  border-color: rgba(196, 158, 86, 0.7);
+}
+
+.contact-address p {
+  color: #4d443a;
+  font-size: 0.74rem;
+  line-height: 1.62;
+  margin: 0;
+}
+
+.contact-address strong {
+  color: #1a1510;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Refined GET DIRECTIONS button */
+.contact-directions {
+  min-height: 38px;
+  padding: 0.62rem 1.3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: #14171d;
+  color: #f7efe4;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid rgba(212, 175, 55, 0.38);
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: background-color 220ms ease, border-color 220ms ease, transform 180ms ease, box-shadow 220ms ease, opacity 550ms cubic-bezier(0.22, 0.6, 0.36, 1) 250ms;
+}
+
+.contact-location.is-visible .contact-directions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-directions:hover {
+  background: #232b36;
+  border-color: rgba(212, 175, 55, 0.85);
+  transform: translateY(-1.5px);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.14), 0 0 10px rgba(212, 175, 55, 0.18);
+}
+
+.contact-directions svg {
+  color: #e5be6d;
+  transition: transform 200ms ease;
+}
+
+.contact-directions:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* Map Wrap with soft shadow and thin gold frame */
+.contact-map-wrap {
+  position: relative;
+  min-height: 280px;
+  border: 1px solid rgba(206, 175, 102, 0.45);
+  background: #e8e8df;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 22px rgba(55, 40, 20, 0.05);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 600ms cubic-bezier(0.22, 0.6, 0.36, 1) 120ms, transform 600ms cubic-bezier(0.22, 0.6, 0.36, 1) 120ms, border-color 250ms ease, box-shadow 250ms ease;
+}
+
+.contact-location.is-visible .contact-map-wrap {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-map-wrap:hover {
+  border-color: rgba(206, 175, 102, 0.7);
+  box-shadow: 0 6px 28px rgba(55, 40, 20, 0.09);
+}
+
+.contact-map-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: saturate(0.78);
+}
+
+.contact-map-label {
+  position: absolute;
+  left: 0.9rem;
+  top: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.8rem;
+  background: rgba(255, 253, 248, 0.96);
+  color: #382c22;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 2px;
+  backdrop-filter: blur(4px);
+}
+
+.contact-map-label svg {
+  color: #a17735;
+}
 
 /* ── FAQ SECTION (Premium Reference Redesign) ── */
 .contact-faq {
@@ -1295,17 +1541,70 @@
   .contact-main { grid-template-columns: 1fr; gap: 0.9rem; padding-top: 0.9rem; padding-bottom: 1.4rem; }
   .contact-form-panel { padding: 1.25rem 1rem; }
   .contact-form-panel h1 { font-size: 1.8rem; }
-  .contact-image-panel { min-height: 300px; }
-  .contact-location { grid-template-columns: 1fr; gap: 0.9rem; padding-bottom: 1.5rem; }
-  .contact-location-copy { padding: 0.4rem 0; }
-  .contact-map-wrap { min-height: 260px; }
+  /* Find Us Here — centered mobile layout with luxury card frame */
+  .contact-location {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding-bottom: 2rem;
+  }
+  .contact-location-copy {
+    padding: 1.6rem 1.2rem;
+    align-items: center;
+    text-align: center;
+    border-radius: 6px;
+  }
+  .contact-location-content {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+  .contact-location-copy .contact-eyebrow {
+    text-align: center;
+  }
+  .contact-location h2 {
+    text-align: center;
+    margin-top: 0.35rem;
+  }
+  .contact-location-ornament {
+    justify-content: center;
+    margin: 0.2rem auto 0.85rem;
+  }
+  .contact-location-desc {
+    text-align: center;
+    max-width: 440px;
+    margin: 0 auto 1.1rem;
+  }
+  .contact-location-rule {
+    background: linear-gradient(to right, transparent, rgba(206, 175, 102, 0.45), transparent);
+    margin: 0 auto 1.15rem;
+    max-width: 260px;
+  }
+  .contact-address {
+    display: inline-flex;
+    align-items: flex-start;
+    text-align: left;
+    margin: 0 auto 1.2rem;
+    max-width: 320px;
+  }
+  .contact-directions {
+    margin: 0 auto;
+    align-self: center;
+  }
+  .contact-map-wrap {
+    min-height: 260px;
+    width: 100%;
+  }
 
-  /* FAQ mobile */
+  /* FAQ mobile — centered intro content, full-width accordion cards */
   .contact-faq-left {
-    padding: 2rem 1.4rem 2rem 2.2rem;
+    padding: 2.2rem 1.4rem 2rem;
     background-image: url('../../assets/Images/contact/contact-botanical.png');
     background-size: auto 100%;
     background-position: left center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
   .contact-faq-left-botanical-top,
   .contact-faq-left-botanical-btm {
@@ -1313,7 +1612,38 @@
     height: 120px;
     opacity: 0.35;
   }
-  .contact-faq-heading-content h2 { font-size: 1.8rem; }
+  .contact-faq-heading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-left: 0;
+    width: 100%;
+  }
+  .contact-faq-heading-content .contact-eyebrow {
+    text-align: center;
+    margin: 0 0 0.5rem;
+  }
+  .contact-faq-heading-content h2 {
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 0 0 0.65rem;
+  }
+  .contact-faq-divider {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.1rem auto 1rem;
+  }
+  .contact-faq-desc {
+    text-align: center;
+    max-width: 320px;
+    margin: 0 auto 1.25rem;
+  }
+  .contact-faq-btn {
+    align-self: center;
+    margin: 0 auto;
+  }
   .contact-faq-right {
     padding: 1.2rem 1rem;
   }
@@ -1366,6 +1696,10 @@
 @media (prefers-reduced-motion: reduce) {
   .contact-main,
   .contact-location,
+  .contact-location-copy,
+  .contact-address,
+  .contact-directions,
+  .contact-map-wrap,
   .contact-faq-left,
   .contact-faq-item {
     opacity: 1 !important;
