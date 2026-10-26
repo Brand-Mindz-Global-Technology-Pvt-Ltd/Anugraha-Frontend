@@ -1056,28 +1056,55 @@
   /* Hero */
   .home-hero {
     height: 55vh;
-    min-height: 400px; /* Reduced height to minimize horizontal cropping */
+    min-height: 400px;
   }
   .home-hero-slide {
-    background-position: 75% center; /* Keep subject on the right in frame */
+    background-position: 75% center;
   }
+  /* Mobile overlay: warm-dark gradient anchored to the left/top text zone.
+     Transitions from a soft warm-dark at the text area to transparent on the right,
+     keeping the jewellery model clearly visible while making text crisp. */
   .home-hero-overlay {
-    background: linear-gradient(to bottom, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    background:
+      linear-gradient(
+        to right,
+        rgba(20, 10, 4, 0.52) 0%,
+        rgba(20, 10, 4, 0.32) 40%,
+        rgba(20, 10, 4, 0.08) 68%,
+        transparent 85%
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(20, 10, 4, 0.18) 0%,
+        transparent 55%
+      );
   }
   .home-hero-content {
-    padding-left: 3rem; /* Increased to clear the left arrow */
-    padding-right: 3rem; /* Increased to clear the right arrow */
+    padding-left: 3rem;
+    padding-right: 3rem;
     margin-top: -3rem;
     max-width: 100%;
   }
+  /* Mobile text colors: switch to light for readability on dark overlay */
+  .home-hero-subtitle {
+    color: #e8c97a;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  }
   .home-hero-title {
-    font-size: 2rem; /* Scaled down slightly to fit new height */
+    font-size: 2rem;
     margin-bottom: 0.8rem;
+    color: #f5ede0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.35);
+  }
+  .home-hero-title-accent {
+    color: #f0c86a;
   }
   .home-hero-desc {
     font-size: 0.9rem;
     max-width: 360px;
     margin-bottom: 1.2rem;
+    color: #e8ddd0;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
   }
   .home-hero-btn {
     padding: 0.75rem 1.6rem;
@@ -1085,17 +1112,17 @@
   }
   .home-hero-arrow {
     padding: 0.35rem;
-    transform: translateY(-50%) scale(0.85); /* Slightly smaller arrows */
+    transform: translateY(-50%) scale(0.85);
   }
-  .home-hero-arrow--prev { left: 0.2rem; } /* Push closer to edge */
-  .home-hero-arrow--next { right: 0.2rem; } /* Push closer to edge */
+  .home-hero-arrow--prev { left: 0.2rem; }
+  .home-hero-arrow--next { right: 0.2rem; }
   .home-hero-dots {
-    bottom: 4.5rem; /* Raise above features banner overlap */
+    bottom: 1.2rem;
   }
 
-  /* Features Banner */
+  /* Features Banner — positioned below hero with clean spacing on mobile */
   .features-banner-wrapper {
-    margin-top: -50px;
+    margin-top: 1rem;
   }
   .features-banner {
     flex-direction: column;
@@ -1212,14 +1239,30 @@
   /* Hero */
   .home-hero {
     height: 50vh;
-    min-height: 350px; /* Reduced to match landscape image ratio better */
+    min-height: 350px;
   }
   .home-hero-slide {
-    background-position: 80% center; /* Shift focus strongly to the right for narrow phones */
+    background-position: 80% center;
+  }
+  /* Slightly stronger overlay for very small screens */
+  .home-hero-overlay {
+    background:
+      linear-gradient(
+        to right,
+        rgba(18, 8, 2, 0.58) 0%,
+        rgba(18, 8, 2, 0.36) 45%,
+        rgba(18, 8, 2, 0.1) 70%,
+        transparent 88%
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(18, 8, 2, 0.22) 0%,
+        transparent 50%
+      );
   }
   .home-hero-content {
-    padding-left: 2rem; /* Clear left arrow */
-    padding-right: 2rem; /* Clear right arrow */
+    padding-left: 2rem;
+    padding-right: 2rem;
     margin-top: -3.5rem;
   }
   .home-hero-subtitle {
@@ -1227,7 +1270,7 @@
     letter-spacing: 2px;
   }
   .home-hero-title {
-    font-size: 1.7rem; /* Fits comfortably in reduced height */
+    font-size: 1.7rem;
     margin-bottom: 0.6rem;
   }
   .home-hero-desc {
@@ -1247,12 +1290,12 @@
   .home-hero-arrow--prev { left: 0.2rem; }
   .home-hero-arrow--next { right: 0.2rem; }
   .home-hero-dots {
-    bottom: 3.5rem;
+    bottom: 1rem;
   }
 
-  /* Features Banner */
+  /* Features Banner — positioned below hero with clean spacing on mobile */
   .features-banner-wrapper {
-    margin-top: -35px;
+    margin-top: 0.85rem;
   }
   .features-banner {
     padding: 0.8rem 1rem;

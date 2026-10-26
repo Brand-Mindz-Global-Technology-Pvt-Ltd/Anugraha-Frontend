@@ -1,365 +1,281 @@
-/* ── NewsletterBanner — shared across About & Contact ── */
+/* ============================================================
+   SHARED NEWSLETTER CTA (Exact match from Home Page)
+   Used on: Home, About Us, Contact Us
+   ============================================================ */
 
-.nlb-section {
+.newsletter-section {
+  background-color: #2e1c15;
+  color: #fff;
+  padding: 4rem 0;
   position: relative;
-  background-color: #3b0d26;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  width: 100%;
   overflow: hidden;
-  border-top: 1px solid rgba(190, 140, 70, 0.25);
-  border-bottom: 1px solid rgba(190, 140, 70, 0.2);
-  min-height: clamp(86px, 8.5vw, 115px);
-  display: flex;
-  align-items: center;
-}
-
-.nlb-section::before {
-  display: none;
-}
-
-/* ── Inner content row overlaid on the burgundy center space (Desktop) ── */
-.nlb-inner {
-  position: relative;
-  z-index: 2;
   width: 100%;
+  box-sizing: border-box;
+}
+
+.newsletter-inner {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  /* Margins clear the left lamp (0-17%) and right flourishes (85-100%) */
-  margin-left: clamp(170px, 18.5%, 340px);
-  margin-right: clamp(120px, 14.5%, 280px);
-  padding: 0.85rem 1rem;
-  gap: clamp(1.2rem, 3vw, 2.5rem);
-  min-height: clamp(86px, 8.5vw, 115px);
-}
-
-/* ── Copy typography ── */
-.nlb-copy {
-  flex: 0 0 auto;
-  max-width: clamp(230px, 32vw, 360px);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 500ms cubic-bezier(0.22, 0.6, 0.36, 1) 80ms,
-              transform 500ms cubic-bezier(0.22, 0.6, 0.36, 1) 80ms;
-}
-
-.nlb-visible .nlb-copy {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.nlb-copy h2 {
-  margin: 0 0 0.22rem 0;
-  font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
-  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
-  font-weight: 500;
-  color: #e2b472;
-  line-height: 1.18;
-  letter-spacing: 0.01em;
-}
-
-.nlb-copy p {
-  margin: 0;
-  color: #d1b8c4;
-  font-size: clamp(0.68rem, 0.78vw, 0.78rem);
-  line-height: 1.45;
-  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
-}
-
-/* ── Form container: unified white input + gold button (Desktop) ── */
-.nlb-form {
-  flex: 0 1 clamp(280px, 35vw, 420px);
-  display: flex;
-  align-items: stretch;
-  height: 38px;
-  border-radius: 2px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 500ms cubic-bezier(0.22, 0.6, 0.36, 1) 180ms,
-              transform 500ms cubic-bezier(0.22, 0.6, 0.36, 1) 180ms,
-              box-shadow 220ms ease;
-}
-
-.nlb-form:focus-within {
-  box-shadow: 0 0 0 2px rgba(226, 180, 114, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.nlb-visible .nlb-form {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.nlb-input {
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  padding: 0 0.95rem;
-  border: none;
-  background: #ffffff;
-  color: #2b2b2b;
-  font: inherit;
-  font-size: 0.74rem;
-  outline: none;
-  font-family: var(--font-sans, system-ui, sans-serif);
-}
-
-.nlb-input::placeholder {
-  color: #8c8c8c;
-  font-style: normal;
-  font-size: 0.72rem;
-}
-
-.nlb-btn {
-  height: 100%;
-  padding: 0 1.25rem;
-  flex: 0 0 auto;
-  background: linear-gradient(135deg, #b77f3a 0%, #c59755 50%, #ad712e 100%);
-  color: #ffffff;
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
+  align-items: center;
   position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.newsletter-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.newsletter-form {
+  display: flex;
+  width: 450px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.newsletter-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 4px 0 0 4px;
+  font-size: 0.85rem;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.newsletter-btn {
+  position: relative;
+  background-color: #b37736;
+  color: #fff;
+  padding: 0 2rem;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  cursor: pointer;
   overflow: hidden;
-  transition: filter 200ms ease, transform 150ms ease;
-  font-family: var(--font-sans, system-ui, sans-serif);
+  transition: background-color 0.3s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
-.nlb-btn:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+.newsletter-btn:hover {
+  background-color: #a0682d;
 }
 
-.nlb-btn::after {
-  content: '';
+/* ── Gold Shimmer Effect ── */
+.newsletter-btn-shimmer {
   position: absolute;
-  inset: 0;
-  left: -80%;
-  width: 60%;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.25), transparent);
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 245, 200, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
   transform: skewX(-20deg);
-  opacity: 0;
-  transition: opacity 200ms ease;
+  pointer-events: none;
 }
 
-.nlb-btn:hover::after {
-  opacity: 1;
-  animation: nlbShimmer 0.55s ease-in-out;
+.newsletter-btn:hover .newsletter-btn-shimmer {
+  animation: goldShimmer 0.75s ease-in-out;
 }
 
-@keyframes nlbShimmer {
+@keyframes goldShimmer {
   100% {
-    left: 160%;
+    left: 200%;
   }
 }
 
-.nlb-sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+/* ── Newsletter Scroll Animations ── */
+@keyframes newsIconReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.nlb-status {
+@keyframes newsSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes newsSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.news-anim-icon,
+.news-anim-text,
+.news-anim-form,
+.news-anim-divider {
+  opacity: 0;
+}
+
+.news-visible .news-anim-icon {
+  animation: newsIconReveal 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  animation-delay: 0.1s;
+}
+
+.news-visible .news-anim-text {
+  animation: newsSlideLeft 0.7s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  animation-delay: 0.3s;
+}
+
+.news-visible .news-anim-form {
+  animation: newsSlideRight 0.7s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  animation-delay: 0.45s;
+}
+
+@keyframes newsFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.news-visible .news-anim-divider {
+  animation: newsFadeIn 1s ease forwards;
+  animation-delay: 0.6s;
+}
+
+.newsletter-divider {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 3rem;
+}
+
+.newsletter-divider::before,
+.newsletter-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: rgba(201, 168, 76, 0.2);
+}
+
+.newsletter-divider::before {
+  margin-right: 15px;
+}
+
+.newsletter-divider::after {
+  margin-left: 15px;
+}
+
+/* ── Validation message feedback ── */
+.newsletter-status-feedback {
   position: absolute;
-  bottom: 0.2rem;
-  left: clamp(170px, 18.5%, 340px);
-  font-size: 0.67rem;
+  bottom: -1.6rem;
+  left: 0;
+  font-size: 0.78rem;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0.02em;
+}
+
+.newsletter-status-feedback.is-success {
   color: #e2b472;
 }
 
-.nlb-br {
-  display: inline;
+.newsletter-status-feedback.is-error {
+  color: #fca5a5;
 }
 
-/* ── Tablet (769px to 900px) ── */
-@media (max-width: 900px) and (min-width: 769px) {
-  .nlb-inner {
-    margin-left: clamp(130px, 16vw, 170px);
-    margin-right: clamp(70px, 10vw, 110px);
-    gap: 1.2rem;
-    padding: 0.75rem 0.8rem;
-  }
-  .nlb-copy {
-    max-width: 250px;
-  }
-  .nlb-form {
-    flex: 1;
-    max-width: 320px;
+/* ============================================================
+   RESPONSIVE BREAKPOINTS (Exact match from Home Page)
+   ============================================================ */
+
+/* Tablet Landscape (≤ 1024px) */
+@media (max-width: 1024px) {
+  .newsletter-form {
+    width: 350px;
   }
 }
 
-/* ── Mobile Layout Fix (max-width: 768px) ── */
+/* Tablet Portrait (≤ 768px) */
 @media (max-width: 768px) {
-  .nlb-section {
-    min-height: unset;
-    height: auto;
-    display: block;
-    /* Puts the lamp artwork as decorative background on left without excessive zooming */
-    background-position: left center;
-    background-size: auto 100%;
-    padding: 1.35rem 1.2rem;
-    box-sizing: border-box;
-  }
-
-  /* Elegant subtle burgundy gradient overlay ensuring text and inputs are 100% readable */
-  .nlb-section::before {
-    display: block;
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(50, 11, 32, 0.45) 0%,
-      rgba(44, 9, 28, 0.78) 45%,
-      rgba(38, 7, 24, 0.88) 100%
-    );
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .nlb-inner {
-    position: relative;
-    z-index: 2;
-    margin: 0;
-    padding: 0;
-    min-height: unset;
-    height: auto;
-    display: flex;
+  .newsletter-inner {
+    padding: 0 1rem;
     flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-    width: 100%;
-    box-sizing: border-box;
+    gap: 1.5rem;
+    text-align: center;
   }
 
-  .nlb-copy {
-    flex: none;
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
+  .newsletter-left {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
   }
 
-  .nlb-copy h2 {
-    font-size: clamp(1.18rem, 5vw, 1.38rem);
-    font-weight: 500;
-    color: #e8c47a;
-    line-height: 1.25;
-    margin: 0 0 0.28rem 0;
-    letter-spacing: 0.01em;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  }
-
-  .nlb-copy p {
-    font-size: 0.8rem;
-    line-height: 1.45;
-    color: #e5d4dc;
-    margin: 0;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-  }
-
-  .nlb-br {
+  .newsletter-divider {
     display: none;
   }
 
-  /* Form: separate rows on mobile for input and Subscribe button */
-  .nlb-form {
-    flex: none;
+  .newsletter-form {
     width: 100%;
-    max-width: 100%;
-    height: auto;
-    min-height: unset;
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    max-width: 400px;
   }
 
-  /* Strict 48-52px height for email input — no flex stretching or oversized height */
-  .nlb-input {
-    flex: none;
-    width: 100%;
-    height: 50px;
-    min-height: 50px;
-    max-height: 50px;
-    border-radius: 3px;
-    background: #ffffff;
-    color: #2b2b2b;
-    padding: 0 1rem;
-    font-size: 0.85rem;
-    line-height: normal;
-    border: none;
-    outline: none;
-    box-sizing: border-box;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  }
-
-  .nlb-input::placeholder {
-    color: #8c8c8c;
-    font-size: 0.82rem;
-  }
-
-  /* Strict 48-52px height for Subscribe button — full-width, centered text */
-  .nlb-btn {
-    flex: none;
-    width: 100%;
-    height: 50px;
-    min-height: 50px;
-    max-height: 50px;
-    border-radius: 3px;
-    background: linear-gradient(135deg, #b77f3a 0%, #c59755 50%, #ad712e 100%);
-    color: #ffffff;
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-sizing: border-box;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  }
-
-  .nlb-status {
+  .newsletter-status-feedback {
     position: static;
-    margin-top: 0.25rem;
-    font-size: 0.72rem;
-    color: #e8c47a;
+    margin-top: 0.5rem;
+    text-align: center;
   }
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .nlb-copy,
-  .nlb-form {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
+/* Mobile (≤ 480px) */
+@media (max-width: 480px) {
+  .newsletter-section {
+    padding: 2.5rem 0;
   }
-  .nlb-btn {
-    transition: none !important;
+
+  .newsletter-inner {
+    padding: 0 0.8rem;
   }
-  .nlb-btn::after {
-    display: none;
+
+  .newsletter-form {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .newsletter-input {
+    border-radius: 4px 4px 0 0;
+    padding: 0.9rem 1rem;
+  }
+
+  .newsletter-btn {
+    border-radius: 0 0 4px 4px;
+    padding: 0.9rem 1.5rem;
   }
 }

@@ -27,6 +27,8 @@ import heroBannerImg1 from '../../assets/Images/home/hero_banner1.png';
 import heroBannerImg2 from '../../assets/Images/home/hero_banner2.png';
 
 import './Home.css';
+import NewsletterBanner, { Newsletter } from '../../components/NewsletterBanner/NewsletterBanner';
+export { Newsletter };
 
 const slides = [
   {
@@ -837,58 +839,6 @@ const SocialAndTestimonial = () => {
           <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '50px', background: 'linear-gradient(to right, #fcf9f2, transparent)', zIndex: 1 }}></div>
         </div>
 
-      </div>
-    </section>
-  );
-};
-
-export const Newsletter = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const sectionRef = React.useRef(null);
-
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <section className="newsletter-section" ref={sectionRef}>
-      {/* Subtle Background Pattern Placeholder */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.05, backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-
-      <div className={`container newsletter-inner ${isVisible ? 'news-visible' : ''}`}>
-        <div className="newsletter-left">
-          <div className="news-anim-icon" style={{ color: 'var(--primary-gold)' }}>
-            {/* Diya placeholder */}
-            <div style={{ fontSize: '3rem' }}>🪔</div>
-          </div>
-          <div className="news-anim-text">
-            <h2 style={{ fontSize: '1.8rem', color: 'var(--primary-gold)', marginBottom: '0.5rem' }}>Be the first to know</h2>
-            <p style={{ fontSize: '0.85rem', color: '#ccc' }}>Subscribe to get updates on new arrivals,<br />exclusive offers and more.</p>
-          </div>
-        </div>
-
-        {/* Decorative Divider to fill empty space */}
-        <div className="newsletter-divider news-anim-divider">
-           <span style={{ color: 'var(--primary-gold)', opacity: 0.5, fontSize: '0.6rem' }}>◆</span>
-        </div>
-
-        <div className="newsletter-form news-anim-form">
-          <input type="email" placeholder="Enter your email address" className="newsletter-input" />
-          <button className="newsletter-btn">
-            SUBSCRIBE
-            <div className="newsletter-btn-shimmer"></div>
-          </button>
-        </div>
       </div>
     </section>
   );

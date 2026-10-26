@@ -1,20 +1,13 @@
-import React from 'react';
-import ctaBg from '../../assets/Images/contact/Elegant Diwali Lamp and Golden Flourishes.png';
+import React, { useState, useEffect, useRef } from 'react';
 import './NewsletterBanner.css';
 
 export default function NewsletterBanner() {
-  const [email, setEmail] = React.useState('');
-  const [status, setStatus] = React.useState('');
-  const [isVisible, setIsVisible] = React.useState(false);
-  const sectionRef = React.useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('');
+  const sectionRef = useRef(null);
 
-  React.useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    if (!('IntersectionObserver' in window)) {
-      setIsVisible(true);
-      return;
-    }
+  useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -22,13 +15,13 @@ export default function NewsletterBanner() {
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.3 }
     );
-    observer.observe(section);
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!email.trim()) {
       setStatus('Please enter your email address.');
@@ -40,50 +33,55 @@ export default function NewsletterBanner() {
     }
     setStatus('Thank you for subscribing!');
     setEmail('');
-  }
+  };
 
   return (
-    <section
-      ref={sectionRef}
-      className={`nlb-section${isVisible ? ' nlb-visible' : ''}`}
-      style={{ backgroundImage: `url("${ctaBg}")` }}
-      aria-label="Newsletter subscription"
-    >
-      <div className="nlb-inner">
-        <div className="nlb-copy nlb-anim-copy">
-          <h2>Be the first to know</h2>
-          <p>
-            Subscribe to get updates on new arrivals,
-            <br className="nlb-br" /> exclusive offers and more.
-          </p>
+    <section className="newsletter-section" ref={sectionRef} aria-label="Newsletter Subscription">
+      {/* Subtle Background Pattern Placeholder */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.05, backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '20px 20px', pointerEvents: 'none' }}></div>
+
+      <div className={`container newsletter-inner ${isVisible ? 'news-visible' : ''}`}>
+        <div className="newsletter-left">
+          <div className="news-anim-icon" style={{ color: 'var(--primary-gold)' }}>
+            {/* Diya placeholder */}
+            <div style={{ fontSize: '3rem' }}>🪔</div>
+          </div>
+          <div className="news-anim-text">
+            <h2 style={{ fontSize: '1.8rem', color: 'var(--primary-gold)', marginBottom: '0.5rem' }}>Be the first to know</h2>
+            <p style={{ fontSize: '0.85rem', color: '#ccc' }}>Subscribe to get updates on new arrivals,<br />exclusive offers and more.</p>
+          </div>
         </div>
 
-        <form className="nlb-form nlb-anim-form" onSubmit={handleSubmit} noValidate>
-          <label className="nlb-sr" htmlFor="nlb-email">
-            Email address
-          </label>
-          <input
-            id="nlb-email"
-            className="nlb-input"
-            type="email"
-            placeholder="Enter your email address"
+        {/* Decorative Divider to fill empty space */}
+        <div className="newsletter-divider news-anim-divider">
+          <span style={{ color: 'var(--primary-gold)', opacity: 0.5, fontSize: '0.6rem' }}>◆</span>
+        </div>
+
+        <form className="newsletter-form news-anim-form" onSubmit={handleSubmit} noValidate>
+          <input 
+            type="email" 
+            placeholder="Enter your email address" 
+            className="newsletter-input" 
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setStatus('');
+              if (status) setStatus('');
             }}
-            autoComplete="email"
+            aria-label="Email address"
           />
-          <button type="submit" className="nlb-btn">
+          <button type="submit" className="newsletter-btn">
             SUBSCRIBE
+            <div className="newsletter-btn-shimmer"></div>
           </button>
+          {status && (
+            <p className={`newsletter-status-feedback ${status.includes('Thank') ? 'is-success' : 'is-error'}`} role="status">
+              {status}
+            </p>
+          )}
         </form>
-        {status && (
-          <p className="nlb-status" role="status">
-            {status}
-          </p>
-        )}
       </div>
     </section>
   );
 }
+
+export { NewsletterBanner as Newsletter };

@@ -3,10 +3,10 @@
   color: #29221c;
 }
 
-/* ── HERO SECTION (Reference Match) ── */
+/* ── HERO SECTION — Home-inspired staggered reveal ── */
 .contact-hero {
   position: relative;
-  height: clamp(250px, 26vw, 290px);
+  height: clamp(270px, 28vw, 320px);
   display: flex;
   background: #fbf8f2;
   overflow: hidden;
@@ -37,62 +37,69 @@
   max-width: 420px;
 }
 
-/* Eyebrow: small gold uppercase */
+/* Eyebrow: fade-down matching Home hero style */
 .contact-hero-eyebrow {
   margin: 0 0 0.1rem;
   color: #9c7333;
-  font-size: clamp(0.72rem, 0.95vw, 0.88rem);
+  font-size: clamp(0.75rem, 1vw, 0.92rem);
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   opacity: 0;
-  animation: chSlideDownFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s forwards;
+  animation: chSlideDownFade 0.75s cubic-bezier(.22, .61, .36, 1) 0.08s forwards;
 }
 
-/* Heading: "Get in Touch" in dark navy/black, "with Anugraha Fashions" in antique gold */
+/* Heading: increased ~3px, staggered line-by-line reveal matching Home hero */
 .contact-hero h1 {
   margin: 0;
   color: #161a22;
   font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
-  font-size: clamp(1.85rem, 2.8vw, 2.6rem);
+  font-size: clamp(1.95rem, 3vw, 2.85rem);
   font-weight: 500;
-  line-height: 1.15;
+  line-height: 1.14;
   letter-spacing: -0.01em;
-  opacity: 0;
-  animation: chSlideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.3s forwards;
 }
 
+/* "Get in Touch" — first line reveal */
+.contact-hero-title-line {
+  display: inline-block;
+  opacity: 0;
+  animation: chSlideUpFade 0.75s cubic-bezier(.22, .61, .36, 1) 0.28s forwards;
+}
+
+/* "with Anugraha Fashions" — gold accent, delayed reveal */
 .contact-hero-gold {
   display: block;
   color: #ab7a33;
-  font-size: clamp(1.6rem, 2.4vw, 2.3rem);
+  font-size: clamp(1.7rem, 2.55vw, 2.5rem);
   font-weight: 400;
-  margin-top: 0.12rem;
+  font-style: italic;
+  margin-top: 0.1rem;
   opacity: 0;
-  animation: chSlideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.45s forwards;
+  animation: chSlideUpFade 0.75s cubic-bezier(.22, .61, .36, 1) 0.44s forwards;
 }
 
-/* Description */
+/* Description: increased ~2-3px, smooth fade-up after heading */
 .contact-hero-description {
-  margin: 0.15rem 0 0.45rem;
+  margin: 0.2rem 0 0.5rem;
   color: #554d42;
-  font-size: clamp(0.86rem, 1.08vw, 1rem);
-  line-height: 1.65;
-  max-width: 390px;
+  font-size: clamp(0.92rem, 1.15vw, 1.06rem);
+  line-height: 1.68;
+  max-width: 400px;
   opacity: 0;
-  animation: chSlideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.6s forwards;
+  animation: chSlideUpFade 0.75s cubic-bezier(.22, .61, .36, 1) 0.62s forwards;
 }
 
-/* Dark Navy Button */
+/* CTA Button: staggered entrance, last element in */
 .contact-hero-button {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  margin-top: 0.3rem;
-  padding: 0.62rem 1.3rem;
+  margin-top: 0.35rem;
+  padding: 0.68rem 1.4rem;
   background: #12151a;
   color: #f7efe4;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -102,7 +109,7 @@
   width: fit-content;
   white-space: nowrap;
   opacity: 0;
-  animation: chSlideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.8s forwards;
+  animation: chSlideUpFade 0.75s cubic-bezier(.22, .61, .36, 1) 0.8s forwards;
   transition: background 200ms ease, border-color 200ms ease, transform 180ms ease;
 }
 
@@ -136,7 +143,9 @@
   object-fit: cover;
   object-position: center 25%;
   display: block;
-  animation: contactHeroScaleIn 1s cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+  /* Home-style smooth zoom: starts slightly zoomed, settles naturally */
+  transform: scale(1.06);
+  animation: contactHeroScaleIn 3.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
 
 /* Far-right decorative slogan overlay */
@@ -190,19 +199,18 @@
   display: block;
 }
 
-/* ── Keyframes ── */
-/* Per-element staggered animations — mirrors Home hero slideDownFade / slideUpFade */
+/* ── Keyframes — mirror Home hero slideDownFade / slideUpFade exactly ── */
 @keyframes chSlideDownFade {
-  0%   { opacity: 0; transform: translateY(-18px); }
+  0%   { opacity: 0; transform: translateY(-16px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes chSlideUpFade {
   0%   { opacity: 0; transform: translateY(18px); }
   100% { opacity: 1; transform: translateY(0); }
 }
-/* Keep existing helpers used by right-panel overlay */
+/* Image: smooth premium zoom from 1.06 down to 1 over 3.5s */
 @keyframes contactHeroScaleIn {
-  from { transform: scale(1.04); }
+  from { transform: scale(1.06); }
   to   { transform: scale(1); }
 }
 @keyframes contactHeroFadeIn {
@@ -245,29 +253,32 @@
 @media (max-width: 580px) {
   .contact-hero-left {
     padding: 1.4rem 1.2rem 1.4rem 1.6rem;
-    background-image: none; /* Keep mobile clean */
+    background-image: none;
   }
   .contact-hero h1 {
-    font-size: 1.65rem;
+    font-size: 1.72rem;
+    line-height: 1.18;
   }
   .contact-hero-gold {
-    font-size: 1.42rem;
+    font-size: 1.48rem;
   }
   .contact-hero-description {
-    font-size: 0.86rem;
+    font-size: 0.9rem;
+    line-height: 1.62;
   }
   .contact-hero-eyebrow {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
   }
   .contact-hero-button {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
+    padding: 0.6rem 1.1rem;
   }
   .contact-hero-right {
-    height: 200px;
-    flex-basis: 200px;
+    height: 210px;
+    flex-basis: 210px;
   }
   .contact-hero-overlay-text {
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     letter-spacing: 0.12em;
   }
 }
@@ -278,6 +289,7 @@
   .contact-hero-overlay-text,
   .contact-hero-ornament,
   .contact-hero-eyebrow,
+  .contact-hero-title-line,
   .contact-hero h1,
   .contact-hero-gold,
   .contact-hero-description,
@@ -286,7 +298,7 @@
     opacity: 1 !important;
     transform: none !important;
   }
-  .contact-hero-model { transition: none; }
+  .contact-hero-model { transition: none; transform: none; }
   .contact-hero-button,
   .contact-hero-button svg { transition: none; }
 }

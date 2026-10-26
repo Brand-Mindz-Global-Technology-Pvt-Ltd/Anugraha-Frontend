@@ -129,7 +129,7 @@ function Contact() {
         <div className="contact-hero-left">
           <div className="contact-hero-content">
             <p className="contact-hero-eyebrow">WE&rsquo;D LOVE TO HEAR FROM YOU</p>
-            <h1>Get in Touch <span className="contact-hero-gold">with Anugraha Fashions</span></h1>
+            <h1><span className="contact-hero-title-line">Get in Touch</span> <span className="contact-hero-gold">with Anugraha Fashions</span></h1>
             <p className="contact-hero-description">Have a question, a special request, or need help with your order? Our team is here to assist you with warmth and care.</p>
             <a href="/collections" className="contact-hero-button">EXPLORE COLLECTIONS <ArrowUpRight size={14} /></a>
           </div>

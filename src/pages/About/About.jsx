@@ -45,6 +45,61 @@ export default function About() {
   const [ctaRef, ctaVisible] = useInView(0.15);
   const [instaRef, instaVisible] = useInView(0.15);
 
+  // Leadership Carousel State (Founder & Co-Founder)
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [prevSlide, setPrevSlide] = useState(null);
+  const [direction, setDirection] = useState('next');
+  const touchStartX = useRef(null);
+
+  const changeSlide = (nextIndex, dir = 'next') => {
+    setPrevSlide(activeSlide);
+    setDirection(dir);
+    setActiveSlide(nextIndex);
+  };
+
+  const handleNext = () => {
+    changeSlide(activeSlide === 0 ? 1 : 0, 'next');
+  };
+
+  const handlePrev = () => {
+    changeSlide(activeSlide === 0 ? 1 : 0, 'prev');
+  };
+
+  // Continuous 3.5-second automatic slide rotation loop
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPrevSlide(activeSlide);
+      setDirection('next');
+      setActiveSlide((prev) => (prev === 0 ? 1 : 0));
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [activeSlide]);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    if (diffX > 40) {
+      handleNext();
+    } else if (diffX < -40) {
+      handlePrev();
+    }
+    touchStartX.current = null;
+  };
+
+  const getSlideClass = (index) => {
+    if (index === activeSlide) {
+      return prevSlide === null ? 'is-active' : `is-active slide-enter-${direction}`;
+    }
+    if (index === prevSlide) {
+      return `is-inactive slide-exit-${direction}`;
+    }
+    return 'is-inactive';
+  };
+
   const instagramGallery = [
     { src: galleryImg1, alt: 'Intertwined Gold Floral Rings' },
     { src: galleryImg2, alt: 'Royal Indian Gold Jewelry Set' },
@@ -69,27 +124,27 @@ export default function About() {
 
         {/* Left: cream text panel */}
         <div className="about-hero-content">
-          <p className="about-eyebrow animate-fade-up delay-1">OUR JOURNEY</p>
+          <p className="about-eyebrow">OUR JOURNEY</p>
           <h1 className="about-hero-title">
-            <span className="line animate-reveal-line delay-2">Timeless Jewellery,</span>
-            <span className="line animate-reveal-line delay-3">
+            <span className="about-hero-title-line">Timeless Jewellery,</span>
+            <span className="about-hero-title-line">
               Crafted <span className="about-hero-accent">with Heart</span>
             </span>
           </h1>
-          <p className="about-hero-desc animate-fade-up delay-4">
+          <p className="about-hero-desc">
             At Anugraha Fashions, we believe jewellery is more than an adornment &mdash; it&apos;s a celebration of you, your story and the moments that matter.
           </p>
-          <a href="#about-story" className="about-hero-cta animate-fade-up delay-5">
+          <a href="#about-story" className="about-hero-cta">
             OUR STORY <span className="cta-arrow" aria-hidden="true">→</span>
           </a>
-          <p className="about-hero-tagline animate-fade-up delay-5">
+          <p className="about-hero-tagline">
             <span className="tagline-rule" aria-hidden="true"></span>
             TRADITION MEETS TOMORROW
           </p>
         </div>
 
         {/* Far-right editorial aside — sits directly on the dark temple background */}
-        <div className="about-hero-aside animate-fade-up delay-4">
+        <div className="about-hero-aside">
           <span className="about-hero-aside-rule" aria-hidden="true"></span>
           <p className="about-hero-aside-text">
             MORE<br />THAN<br />JEWELLERY
@@ -215,115 +270,205 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── FOUNDER SECTION ── */}
-      <section className="about-founder-section" ref={founderRef}>
+      {/* ── LEADERSHIP CAROUSEL SECTION (FOUNDER & CO-FOUNDER) ── */}
+      <section
+        className="about-founder-section"
+        ref={founderRef}
+        aria-label="Leadership Spotlight"
+      >
         <div className="container">
-          <div className={`founder-grid ${founderVisible ? 'is-visible' : ''}`}>
+          <div
+            className={`leadership-carousel ${founderVisible ? 'is-visible' : ''}`}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* SLIDE 1: FOUNDER */}
+            <div
+              className={`leadership-slide ${getSlideClass(0)}`}
+              aria-hidden={activeSlide !== 0}
+            >
+              <div className="leadership-slide-inner">
+                {/* Portrait Column */}
+                <div className="founder-image-col">
+                  <div className="founder-image-wrap">
+                    <img
+                      src={founderImg}
+                      alt="Priya S. — Founder, Anugraha Fashions"
+                    />
+                  </div>
+                </div>
 
-            {/* LEFT: Portrait */}
-            <div className="founder-image-col">
-              <div className="founder-image-wrap">
-                <img
-                  src={founderImg}
-                  alt="Priya S. — Founder, Anugraha Fashions"
-                />
-              </div>
-            </div>
-
-            {/* CENTER: Story & Quote */}
-            <div className="founder-content-col">
-              <p className="founder-eyebrow">ABOUT OUR FOUNDER</p>
-              <h2>A Dream Woven in Gold</h2>
-              <div className="founder-title-ornament" aria-hidden="true">
-                <span className="ornament-line"></span>
-                <span className="ornament-diamond">✦</span>
-                <span className="ornament-line"></span>
-              </div>
-              <p className="founder-lead">
-                Anugraha Fashions was founded by <strong>Priya S.</strong>, a passionate entrepreneur
-                with a deep love for Indian artistry and a vision to make traditional jewellery
-                meaningful for the modern woman. Her journey is rooted in the belief that
-                every woman deserves to feel special &mdash; every day.
-              </p>
-              <div className="founder-quote-box">
-                <span className="quote-icon" aria-hidden="true">&ldquo;</span>
-                <div className="quote-content">
-                  <p className="quote-text">
-                    &ldquo;Jewellery is not just an accessory, it&apos;s a feeling &mdash;
-                    a connection to who you are, where you come from, and the
-                    moments you cherish.&rdquo;
+                {/* Narrative & Quote Column */}
+                <div className="founder-content-col">
+                  <p className="founder-eyebrow">ABOUT OUR FOUNDER</p>
+                  <h2>A Dream Woven in Gold</h2>
+                  <div className="founder-title-ornament" aria-hidden="true">
+                    <span className="ornament-line"></span>
+                    <span className="ornament-diamond">✦</span>
+                    <span className="ornament-line"></span>
+                  </div>
+                  <p className="founder-lead">
+                    Anugraha Fashions was founded by <strong>Priya S.</strong>, a passionate entrepreneur
+                    with a deep love for Indian artistry and a vision to make traditional jewellery
+                    meaningful for the modern woman. Her journey is rooted in the belief that
+                    every woman deserves to feel special &mdash; every day.
                   </p>
-                  <div className="quote-author">
-                    <span className="author-name">&ndash; Priya S.</span>
-                    <span className="author-title">FOUNDER, ANUGRAHA FASHIONS</span>
+                  <div className="founder-quote-box">
+                    <span className="quote-icon" aria-hidden="true">&ldquo;</span>
+                    <div className="quote-content">
+                      <p className="quote-text">
+                        &ldquo;Jewellery is not just an accessory, it&apos;s a feeling &mdash;
+                        a connection to who you are, where you come from, and the
+                        moments you cherish.&rdquo;
+                      </p>
+                      <div className="quote-author">
+                        <span className="author-name">&ndash; Priya S.</span>
+                        <span className="author-title">FOUNDER, ANUGRAHA FASHIONS</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* RIGHT: Stats column */}
-            <div className="founder-stats-col">
-              {/* Stat 1: Heart */}
-              <div className="founder-stat-item">
-                <div className="founder-stat-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="30" height="30">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                  </svg>
+            {/* SLIDE 2: CO-FOUNDER */}
+            <div
+              className={`leadership-slide ${getSlideClass(1)}`}
+              aria-hidden={activeSlide !== 1}
+            >
+              <div className="leadership-slide-inner">
+                {/* Portrait Column */}
+                <div className="founder-image-col">
+                  <div className="founder-image-wrap">
+                    <img
+                      src={coFounderImg}
+                      alt="Bhavana — Co-Founder, Anugraha Fashions"
+                    />
+                  </div>
                 </div>
-                <span className="founder-stat-number">10,000+</span>
-                <span className="founder-stat-label">Happy Customers</span>
-              </div>
-              {/* Stat 2: Community */}
-              <div className="founder-stat-item">
-                <div className="founder-stat-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
+
+                {/* Narrative & Quote Column */}
+                <div className="founder-content-col">
+                  <p className="founder-eyebrow">ABOUT OUR CO-FOUNDER</p>
+                  <h2>A Shared Vision of Elegance</h2>
+                  <div className="founder-title-ornament" aria-hidden="true">
+                    <span className="ornament-line"></span>
+                    <span className="ornament-diamond">✦</span>
+                    <span className="ornament-line"></span>
+                  </div>
+                  <p className="founder-lead">
+                    Alongside Priya, <strong>Bhavana</strong> shares an enduring passion for authentic
+                    Indian artistry and creative excellence. Together, they envision jewellery as a
+                    meaningful celebration of personal grace, blending traditional mastery with modern
+                    silhouettes to craft timeless pieces that women cherish for generations.
+                  </p>
+                  <div className="founder-quote-box">
+                    <span className="quote-icon" aria-hidden="true">&ldquo;</span>
+                    <div className="quote-content">
+                      <p className="quote-text">
+                        &ldquo;Every creation is born from a shared love for craft and culture &mdash;
+                        designed to bring joy, inspire confidence, and become part of your most
+                        cherished stories.&rdquo;
+                      </p>
+                      <div className="quote-author">
+                        <span className="author-name">&ndash; Bhavana</span>
+                        <span className="author-title">CO-FOUNDER, ANUGRAHA FASHIONS</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <span className="founder-stat-text-label">A Growing<br />Community</span>
-              </div>
-              {/* Stat 3: Heritage */}
-              <div className="founder-stat-item">
-                <div className="founder-stat-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-                    <path d="M12 21c0-4.5 3-7.5 6-8-1 4-3.5 6.5-6 8z" />
-                    <path d="M12 21c0-4.5-3-7.5-6-8 1 4 3.5 6.5 6 8z" />
-                    <path d="M12 21c-2-5-1.5-11 0-15 1.5 4 2 10 0 15z" />
-                    <path d="M12 21c3-2 8-3.5 10-1-2-3.5-5.5-5.5-10-5" />
-                    <path d="M12 21c-3-2-8-3.5-10-1 2-3.5 5.5-5.5 10-5" />
-                  </svg>
-                </div>
-                <span className="founder-stat-text-label">Carrying Forward<br />Our Heritage</span>
               </div>
             </div>
 
-            {/* DIVIDER BETWEEN FOUNDER & CO-FOUNDER */}
-            <div className="cofounder-divider" aria-hidden="true" />
+            {/* CAROUSEL CONTROLS */}
+            <div className="leadership-controls">
+              <button
+                type="button"
+                className="leadership-arrow-btn"
+                onClick={handlePrev}
+                aria-label="Previous profile"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
 
-            {/* CO-FOUNDER: Portrait */}
-            <div className="cofounder-image-col">
-              <div className="cofounder-image-wrap">
-                <img
-                  src={coFounderImg}
-                  alt="Bhavana — Co-Founder, Anugraha Fashions"
-                />
+              <div className="leadership-indicators">
+                <button
+                  type="button"
+                  className={`leadership-indicator ${activeSlide === 0 ? 'is-active' : ''}`}
+                  onClick={() => changeSlide(0, activeSlide === 0 ? 'next' : 'prev')}
+                  aria-label="Slide 1: Priya S., Founder"
+                >
+                  <span className="indicator-label">Founder</span>
+                </button>
+                <span className="indicator-sep" aria-hidden="true">/</span>
+                <button
+                  type="button"
+                  className={`leadership-indicator ${activeSlide === 1 ? 'is-active' : ''}`}
+                  onClick={() => changeSlide(1, activeSlide === 1 ? 'prev' : 'next')}
+                  aria-label="Slide 2: Bhavana, Co-Founder"
+                >
+                  <span className="indicator-label">Co-Founder</span>
+                </button>
               </div>
+
+              <button
+                type="button"
+                className="leadership-arrow-btn"
+                onClick={handleNext}
+                aria-label="Next profile"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* STATISTICS BAR: Outside/below the complete leadership slider */}
+          <div className={`founder-stats-bar ${founderVisible ? 'is-visible' : ''}`}>
+            {/* Stat 1: Heart */}
+            <div className="founder-stat-item">
+              <div className="founder-stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="30" height="30">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+              </div>
+              <span className="founder-stat-number">10,000+</span>
+              <span className="founder-stat-label">Happy Customers</span>
             </div>
 
-            {/* CO-FOUNDER: Heading & Name */}
-            <div className="cofounder-content-col">
-              <p className="cofounder-eyebrow">ABOUT OUR CO-FOUNDER</p>
-              <h2 className="cofounder-name">Bhavana</h2>
-              <div className="cofounder-title-ornament" aria-hidden="true">
-                <span className="ornament-line"></span>
-                <span className="ornament-diamond">✦</span>
-                <span className="ornament-line"></span>
+            <div className="founder-stats-bar-divider" aria-hidden="true" />
+
+            {/* Stat 2: Community */}
+            <div className="founder-stat-item">
+              <div className="founder-stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
               </div>
+              <span className="founder-stat-text-label">A Growing<br />Community</span>
             </div>
 
+            <div className="founder-stats-bar-divider" aria-hidden="true" />
+
+            {/* Stat 3: Heritage */}
+            <div className="founder-stat-item">
+              <div className="founder-stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
+                  <path d="M12 21c0-4.5 3-7.5 6-8-1 4-3.5 6.5-6 8z" />
+                  <path d="M12 21c0-4.5-3-7.5-6-8 1 4 3.5 6.5 6 8z" />
+                  <path d="M12 21c-2-5-1.5-11 0-15 1.5 4 2 10 0 15z" />
+                  <path d="M12 21c3-2 8-3.5 10-1-2-3.5-5.5-5.5-10-5" />
+                  <path d="M12 21c-3-2-8-3.5-10-1 2-3.5 5.5-5.5 10-5" />
+                </svg>
+              </div>
+              <span className="founder-stat-text-label">Carrying Forward<br />Our Heritage</span>
+            </div>
           </div>
         </div>
       </section>
