@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Newsletter } from '../Home/Home';
+import NewsletterBanner from '../../components/NewsletterBanner/NewsletterBanner';
+
 
 import heroBannerImg from '../../assets/Images/about/about_banner.png';
 import heroModelImg from '../../assets/Images/home/home_herobanner.png';
@@ -480,7 +481,7 @@ export default function About() {
         </div>
       </section>
 
-      <Newsletter />
+      <NewsletterBanner />
     </main>
   );
 }

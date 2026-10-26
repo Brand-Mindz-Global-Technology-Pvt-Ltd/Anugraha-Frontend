@@ -1,9 +1,8 @@
 import React from 'react';
-import { Mail, MapPin, MessageCircle, Phone, ArrowUpRight, ChevronDown, ChevronRight, Flame } from 'lucide-react';
+import { Mail, MapPin, MessageCircle, Phone, ArrowUpRight, ChevronDown } from 'lucide-react';
 import helpImage from '../../assets/Images/contact/we_are_here_to_help.png';
 import contactHeroImage from '../../assets/Images/contact/image.png';
-import faqImage from '../../assets/Images/home/necklace_banner.png';
-import { Newsletter } from '../Home/Home';
+import NewsletterBanner from '../../components/NewsletterBanner/NewsletterBanner';
 import './Contact.css';
 
 const contactMethods = [
@@ -21,6 +20,7 @@ const questions = [
   { question: 'What is your return and exchange policy?', answer: 'Eligible purchases can be returned or exchanged within 7 days of delivery, subject to our jewellery care and return conditions.' },
   { question: 'How do I care for my jewellery?', answer: 'Keep each piece in its pouch, away from moisture, perfume, and household chemicals. A soft dry cloth is best for gentle cleaning.' },
 ];
+
 
 function Contact() {
   const [sent, setSent] = React.useState(false);
@@ -249,15 +249,19 @@ function Contact() {
       </section>
 
       <section className="contact-faq" ref={faqRef}>
-        <div className={`contact-faq-inner container ${isFaqVisible ? 'is-visible' : ''}`}>
-          <div className="contact-faq-heading">
+        <div className={`contact-faq-inner${isFaqVisible ? ' is-visible' : ''}`}>
+
+          {/* LEFT PANEL */}
+          <div className="contact-faq-left">
+            <div className="contact-faq-left-botanical-top" aria-hidden="true" />
+            <div className="contact-faq-left-botanical-btm" aria-hidden="true" />
             <div className="contact-faq-heading-content">
               <p className="contact-eyebrow">FREQUENTLY ASKED QUESTIONS</p>
               <h2>Quick Answers<br />for You</h2>
               <div className="contact-faq-divider" aria-hidden="true">
-                <span className="contact-faq-divider-line"></span>
+                <span className="contact-faq-divider-line" />
                 <span className="contact-faq-divider-lotus">🪷</span>
-                <span className="contact-faq-divider-line"></span>
+                <span className="contact-faq-divider-line" />
               </div>
               <p className="contact-faq-desc">
                 Can&rsquo;t find what you&rsquo;re looking for?<br />
@@ -265,42 +269,48 @@ function Contact() {
                 we&rsquo;re always happy to help!
               </p>
               <a className="contact-faq-btn" href="#contact-form">
-                CONTACT US &nbsp;&rarr;
+                CONTACT US &nbsp;<span className="faq-btn-arrow">&rarr;</span>
               </a>
             </div>
           </div>
-          <div className="contact-faq-list">
-            {questions.map(({ question, answer }, index) => (
-              <div 
-                className={`contact-faq-item${openQuestion === index ? ' is-open' : ''}`} 
-                key={question}
-                style={{ animationDelay: `${120 + index * 70}ms` }}
-              >
-                <button
-                  className="contact-faq-question"
-                  type="button"
-                  aria-expanded={openQuestion === index}
-                  aria-controls={`contact-answer-${index}`}
-                  onClick={() => setOpenQuestion(openQuestion === index ? -1 : index)}
+
+          {/* RIGHT PANEL — accordion */}
+          <div className="contact-faq-right">
+            <div className="contact-faq-list">
+              {questions.map(({ question, answer }, index) => (
+                <div
+                  className={`contact-faq-item${openQuestion === index ? ' is-open' : ''}`}
+                  key={question}
+                  style={{ animationDelay: `${100 + index * 60}ms` }}
                 >
-                  <span className="contact-faq-question-text">
-                    <span className="contact-faq-num">{index + 1}. </span>
-                    {question}
-                  </span>
-                  <div className="contact-faq-chevron-wrap">
-                    <ChevronDown size={17} className="contact-faq-chevron" aria-hidden="true" />
+                  <button
+                    className="contact-faq-question"
+                    type="button"
+                    aria-expanded={openQuestion === index}
+                    aria-controls={`contact-answer-${index}`}
+                    onClick={() => setOpenQuestion(openQuestion === index ? -1 : index)}
+                  >
+                    <span className="contact-faq-question-text">
+                      <span className="contact-faq-num">{index + 1}. </span>
+                      {question}
+                    </span>
+                    <div className="contact-faq-chevron-wrap">
+                      <ChevronDown size={13} className="contact-faq-chevron" aria-hidden="true" />
+                    </div>
+                  </button>
+                  <div className="contact-faq-answer" id={`contact-answer-${index}`}>
+                    <p>{answer}</p>
                   </div>
-                </button>
-                <div className="contact-faq-answer" id={`contact-answer-${index}`}>
-                  <p>{answer}</p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
         </div>
       </section>
 
-      <Newsletter />
+      <NewsletterBanner />
+
     </main>
   );
 }
