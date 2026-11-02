@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import api from "../../services/api";
 import {
   Truck, ShieldCheck, RefreshCw, Search, User, Heart, ShoppingBag,
   ChevronRight, ChevronLeft, Star, Phone, Mail, CheckCircle, MapPin
@@ -606,14 +607,39 @@ const NewArrivals = () => {
     }
   };
 
-  const products = [
-    { title: 'Floral Gold Pendant', price: '4320', img: '/gold_necklace.jpg' },
-    { title: 'Heritage Jhumka Earrings', price: '7140', img: '/gold_necklace.jpg' },
-    { title: 'Traditional Gold Bangles', price: '2500', img: '/gold_bangles.jpg' },
-    { title: 'Classic Gold Ring', price: '2780', img: '/gold_bangles.jpg' },
-    { title: 'Pearl Drop Pendant', price: '3250', img: '/gold_necklace.jpg' },
-    { title: 'Royal Necklace Set', price: '3600', img: '/gold_necklace.jpg' },
-  ];
+ const [products, setProducts] = useState([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const response = await api.get('/customers/products', {
+        params: {
+          page: 1,
+          limit: 6,
+          sort: 'newest',
+        },
+      });
+
+     if (response.data.success) {
+  console.log(
+  "Product images:",
+  response.data.data.map((product) => ({
+    name: product.name,
+    images: product.images[0],
+  }))
+);
+  setProducts(response.data.data);
+}
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, []);
 
   return (
     <section className="new-arrivals-section" ref={sectionRef}>
@@ -624,13 +650,20 @@ const NewArrivals = () => {
           ref={scrollRef}
           className={`new-arrivals-scroll ${isVisible ? 'animate-in' : ''}`}
         >
-          {products.map((p, i) => (
-            <div key={i} className="new-arrivals-item">
-              <ProductCard index={i} {...p} />
-            </div>
-          ))}
-        </div>
-
+        {products.map((product, index) => (
+  <div key={product._id} className="new-arrivals-item">
+    <ProductCard
+      index={index}
+      img={
+        product.images?.[0]?.startsWith("http")
+          ? product.images[0]
+          : `http://localhost:5000${product.images?.[0] || ""}`
+      }
+      title={product.name}
+      price={product.price}
+    />
+  </div>
+))}
         <div
           onClick={() => scroll('left')}
           className="new-arrivals-arrow new-arrivals-arrow--left">
@@ -641,6 +674,7 @@ const NewArrivals = () => {
           className="new-arrivals-arrow new-arrivals-arrow--right">
           <ChevronRight size={20} />
         </div>
+      </div>
       </div>
     </section>
   );

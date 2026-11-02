@@ -1,11 +1,19 @@
+
 import React from 'react';
-import { Routes, Route, Outlet, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import AdminLayout from './pages/Admin/AdminLayout';
 import Dashboard from './pages/Admin/Dashboard';
 import Category from './pages/Admin/Category';
+import SearchPage from "./pages/Search/Search";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Product from './pages/Admin/Product';
+import Cart from "./pages/Cart/Cart";
 import Inventory from './pages/Admin/Inventory';
 import Supplier from './pages/Admin/Supplier';
+import Checkout from "./pages/Checkout/Checkout";
+import PaymentProcessing from './pages/PaymentProcessing/PaymentProcessing';
+import PaymentSuccess from './pages/PaymentSuccess/PaymentSuccess';
+import PaymentFailed from './pages/PaymentFailed/PaymentFailed';
 import Orders from './pages/Admin/Orders';
 import OfflineOrders from './pages/Admin/OfflineOrders';
 import {
@@ -62,7 +70,43 @@ const TopBar = () => {
 const Header = () => {
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
   const [openSubmenu, setOpenSubmenu] = React.useState(null);
+
+  // Cart count from localStorage
+  const [cartCount, setCartCount] = React.useState(() => {
+    try {
+      const cart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+      return cart.reduce((total, item) => total + Number(item.quantity || 0), 0);
+    } catch {
+      return 0;
+    }
+  });
+
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Update cart count whenever cart changes
+  React.useEffect(() => {
+    const updateCartCount = () => {
+      try {
+        const cart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+        const count = cart.reduce(
+          (total, item) => total + Number(item.quantity || 0),
+          0
+        );
+        setCartCount(count);
+      } catch {
+        setCartCount(0);
+      }
+    };
+
+    window.addEventListener("cartUpdated", updateCartCount);
+    window.addEventListener("storage", updateCartCount);
+
+    return () => {
+      window.removeEventListener("cartUpdated", updateCartCount);
+      window.removeEventListener("storage", updateCartCount);
+    };
+  }, []);
 
   // Close mobile menu on route change
   React.useEffect(() => {
@@ -120,7 +164,7 @@ const Header = () => {
           <div className="nav-item-animate">
             <Link to="/" className={location.pathname === '/' ? 'active' : ''}>HOME</Link>
           </div>
-          
+
           {/* SHOP Dropdown */}
           <div className="nav-item nav-item-animate">
             <a href="#">SHOP ▾</a>
@@ -177,12 +221,48 @@ const Header = () => {
         </nav>
 
         <div className="app-header-icons">
-          <div className="header-icon-animate"><Search size={18} className="search-icon" style={{ cursor: 'pointer' }} /></div>
-          <div className="header-icon-animate"><User size={18} style={{ cursor: 'pointer' }} /></div>
-          <div className="header-icon-animate"><Heart size={18} style={{ cursor: 'pointer' }} /></div>
-          <div className="header-icon-animate" style={{ position: 'relative', cursor: 'pointer' }}>
+          <div
+            className="header-icon-animate"
+            onClick={() => navigate("/search")}
+            style={{ cursor: "pointer" }}
+          >
+            <Search size={18} className="search-icon" />
+          </div>
+
+          <div className="header-icon-animate">
+            <User size={18} style={{ cursor: 'pointer' }} />
+          </div>
+
+          <div className="header-icon-animate">
+            <Heart size={18} style={{ cursor: 'pointer' }} />
+          </div>
+
+          {/* Cart Icon with Dynamic Count */}
+          <div
+            className="header-icon-animate"
+            style={{ position: 'relative', cursor: 'pointer' }}
+            onClick={() => navigate("/cart")}
+          >
             <ShoppingBag size={18} />
-            <span style={{ position: 'absolute', top: '-6px', right: '-8px', backgroundColor: 'var(--primary-gold)', color: '#111', fontSize: '0.6rem', fontWeight: 'bold', width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>0</span>
+            <span
+              style={{
+                position: 'absolute',
+                top: '-6px',
+                right: '-8px',
+                backgroundColor: 'var(--primary-gold)',
+                color: '#111',
+                fontSize: '0.6rem',
+                fontWeight: 'bold',
+                width: '16px',
+                height: '16px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {cartCount}
+            </span>
           </div>
         </div>
       </div>
@@ -421,7 +501,15 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="contact" element={<Contact />} />
         <Route path="about" element={<About />} />
+        <Route path="search" element={<SearchPage />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="payment-processing" element={<PaymentProcessing />} />
+        <Route path="payment-success" element={<PaymentSuccess />} />
+        <Route path="payment-failed" element={<PaymentFailed />} />
+        <Route path="product/:slug/:id" element={<ProductDetails />} />
       </Route>
+
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
