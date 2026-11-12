@@ -1,0 +1,522 @@
+/* ============================================================
+   Anugraha Fashions – Customer Registration Page
+   Premium luxury jewellery theme matching target reference image
+   ============================================================ */
+
+/* ── Full viewport container ── */
+.register-page-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background-color: #fae6cd;
+  background: radial-gradient(ellipse at 50% 50%, #fbe9d2 0%, #fae5c8 45%, #f2d4b2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ── Main Registration Card ── */
+.register-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 760px;
+  height: 680px;
+  max-height: calc(100vh - 28px);
+  background-color: #fbf8f2;
+  background-image: url('../../assets/Images/login/anugraha_desktop.png');
+  background-size: cover;
+  background-position: center left;
+  background-repeat: no-repeat;
+  border-radius: 26px;
+  border: 1.5px solid rgba(212, 175, 55, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(245, 222, 160, 0.45),
+    0 0 30px rgba(212, 160, 60, 0.28),
+    0 0 65px rgba(212, 150, 45, 0.16),
+    0 24px 60px rgba(65, 45, 25, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+  display: flex;
+  overflow: hidden; /* No scrollbar on card */
+}
+
+/* ── Right Form Panel (placed in the blank cream area) ── */
+.register-form-panel {
+  position: relative;
+  z-index: 3;
+  margin-left: auto;
+  width: 55%;
+  height: 100%;
+  padding: 22px 34px 18px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden; /* Fix internal scrollbar */
+}
+
+/* ── Anugraha Brand Logo (180–200px desktop size with aspect ratio preserved) ── */
+.register-brand-logo-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.register-brand-logo-img {
+  width: 190px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── Ornamental Divider with Gold Sparkle ── */
+.ornamental-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100px;
+  margin: 4px auto;
+}
+
+.ornament-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.65), transparent);
+}
+
+.ornament-icon {
+  color: #c5a059;
+  font-size: 8px;
+  line-height: 1;
+  opacity: 0.95;
+  user-select: none;
+}
+
+/* ── Heading and Subtitle ── */
+.register-title {
+  font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
+  font-size: 32px;
+  font-weight: 600;
+  color: #1a1612;
+  margin: 1px 0 2px 0;
+  text-align: center;
+  letter-spacing: -0.3px;
+  line-height: 1.15;
+}
+
+.register-tagline {
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 12px;
+  color: #6d6458;
+  margin: 0 0 10px 0;
+  text-align: center;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+/* ── Success Banner ── */
+.register-feedback.success {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  font-size: 11.5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* ── Registration Form (5 Fields) ── */
+.register-form {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 7.5px;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* ── Input Box Pill ── */
+.input-pill {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  background-color: #ffffff;
+  border: 1px solid #dfd7cb;
+  border-radius: 7.5px;
+  padding: 0 11px;
+  gap: 9px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.input-pill:focus-within {
+  border-color: #c5a059;
+  box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.16);
+}
+
+.input-pill.has-error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.12);
+}
+
+/* Left Gold Icon */
+.pill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c5a059;
+  flex-shrink: 0;
+}
+
+/* Text Input */
+.input-pill input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: #222222;
+  width: 100%;
+}
+
+.input-pill input::placeholder {
+  color: #8c8479;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Password Toggle Eye Button */
+.eye-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #8c8275;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.eye-toggle-btn:hover {
+  color: #4a443c;
+}
+
+/* Error Message */
+.field-error-text {
+  font-size: 10px;
+  color: #dc2626;
+  margin-top: 1px;
+  padding-left: 2px;
+  font-weight: 500;
+}
+
+/* ── Register CTA Button (Dark Navy with Gold Text) ── */
+.register-cta-btn {
+  width: 100%;
+  height: 38px;
+  margin-top: 2px;
+  background-color: #101726;
+  color: #e6c875;
+  border: none;
+  border-radius: 7.5px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(16, 23, 38, 0.14);
+  font-family: inherit;
+}
+
+.cta-arrow {
+  font-size: 15px;
+  transition: transform 0.2s ease;
+}
+
+.register-cta-btn:hover:not(:disabled) {
+  background-color: #080d16;
+  color: #f4dc96;
+  box-shadow: 0 5px 14px rgba(16, 23, 38, 0.22);
+  transform: translateY(-1px);
+}
+
+.register-cta-btn:hover:not(:disabled) .cta-arrow {
+  transform: translateX(3px);
+}
+
+.register-cta-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ── Sign In Footer ── */
+.register-signin-footer {
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 11.5px;
+  color: #6e665d;
+  text-align: center;
+  margin-top: 1px;
+}
+
+.signin-link {
+  color: #a37c3f;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+  margin-left: 3px;
+}
+
+.signin-link:hover {
+  color: #7d5c28;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TABLET RESPONSIVENESS (769px to 1024px)
+   ══════════════════════════════════════════════════════════ */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .register-page-wrapper {
+    padding: 20px;
+  }
+
+  .register-card {
+    max-width: 700px;
+    height: 640px;
+  }
+
+  .register-form-panel {
+    width: 57%;
+    padding: 20px 28px 18px;
+  }
+
+  .register-brand-logo-img {
+    width: 160px;
+  }
+
+  .register-title {
+    font-size: 28px;
+  }
+
+  .register-form {
+    max-width: 290px;
+    gap: 7px;
+  }
+
+  .input-pill {
+    height: 38px;
+  }
+
+  .register-cta-btn {
+    height: 40px;
+    font-size: 13.5px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS (<= 768px)
+   Full-width luxury mobile layout using 'anugraha mobile.png'
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Full-viewport wrapper — allows vertical scroll on small screens */
+  .register-page-wrapper {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #fae6cd;
+    background: #fbf5eb;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+  }
+
+  /* Card fills full viewport width; height expands naturally with content */
+  .register-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 100dvh;
+    max-height: none;
+    margin: 0;
+    background-image: url('../../assets/Images/login/anugraha mobile.png');
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-color: #fbf5eb;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+
+  /* Form panel centered with 16–20px side padding */
+  .register-form-panel {
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    height: auto;
+    min-height: 100dvh;
+    padding: 38px 20px 36px 20px;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+
+  /* Prominent Luxury Logo (140–160px) */
+  .register-brand-logo-wrap {
+    margin-bottom: 2px;
+  }
+
+  .register-brand-logo-img {
+    width: 155px;
+    max-width: 100%;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  /* Heading */
+  .register-title {
+    font-size: 32px;
+    margin: 2px 0 3px 0;
+  }
+
+  /* Tagline */
+  .register-tagline {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  /* Form occupies full panel width */
+  .register-form {
+    width: 100%;
+    max-width: 100%;
+    gap: 11px;
+  }
+
+  /* Input fields — 48–52px touch-friendly height with subtle gold border */
+  .input-pill {
+    height: 50px;
+    border-radius: 10px;
+    padding: 0 14px;
+    gap: 11px;
+    background-color: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(197, 160, 89, 0.45);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  }
+
+  .input-pill:focus-within {
+    border-color: #c5a059;
+    box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.22);
+  }
+
+  .input-pill input {
+    font-size: 14.5px;
+  }
+
+  .input-pill input::placeholder {
+    font-size: 13.5px;
+  }
+
+  .field-error-text {
+    font-size: 11px;
+  }
+
+  /* CTA Button — 48–52px luxury touch button */
+  .register-cta-btn {
+    height: 50px;
+    margin-top: 5px;
+    font-size: 15.5px;
+    font-weight: 500;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(16, 23, 38, 0.18);
+  }
+
+  .ornamental-divider {
+    margin: 7px auto;
+  }
+
+  /* Sign-in footer text */
+  .register-signin-footer {
+    font-size: 13px;
+    margin-top: 5px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SMALL MOBILE SCREENS (<= 360px: e.g. 320px, 360px)
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  .register-form-panel {
+    padding: 28px 16px 26px 16px;
+  }
+
+  .register-brand-logo-img {
+    width: 135px;
+  }
+
+  .register-title {
+    font-size: 26px;
+  }
+
+  .register-tagline {
+    font-size: 11.5px;
+    margin-bottom: 12px;
+  }
+
+  .register-form {
+    gap: 9px;
+  }
+
+  .input-pill {
+    height: 46px;
+    padding: 0 11px;
+    gap: 9px;
+  }
+
+  .input-pill input {
+    font-size: 13.5px;
+  }
+
+  .register-cta-btn {
+    height: 46px;
+    font-size: 14.5px;
+  }
+}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { toggleWishlistItem, getCustomerMongoId, fetchCustomerWishlist } from "../../services/wishlistService";
 import {
   Truck, ShieldCheck, RefreshCw, Search, User, Heart, ShoppingBag,
   ChevronRight, ChevronLeft, Star, Phone, Mail, CheckCircle, MapPin
@@ -72,53 +74,53 @@ const Hero = () => {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-  <section className="home-hero">
-    {slides.map((slide, index) => (
-      <div key={index} className="home-hero-slide" style={{
-        backgroundImage: `url(${slide.img})`,
-        opacity: currentSlide === index ? 1 : 0,
-        transform: currentSlide === index ? 'scale(1.05)' : 'scale(1)',
-        zIndex: currentSlide === index ? 0 : -1
-      }} />
-    ))}
-    
-    <div className="home-hero-overlay"></div>
-    {/* Subtle gold shimmer over the model area (approx right side) */}
-    <div className="hero-glow-overlay"></div>
-
-    <div className="container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
-      {/* key={currentSlide} forces React to remount this div when slide changes, restarting CSS animations */}
-      <div className="home-hero-content" key={currentSlide}>
-        <p className="home-hero-subtitle">{slides[currentSlide].subtitle}</p>
-        <h1 className="home-hero-title">
-          <span className="home-hero-title-line">{slides[currentSlide].title1}</span><br />
-          <span className="home-hero-title-line">
-            {slides[currentSlide].midText}<span className="home-hero-title-accent">{slides[currentSlide].title2}</span>
-          </span>
-        </h1>
-        <p className="home-hero-desc">
-          {slides[currentSlide].desc}
-        </p>
-        <button className="home-hero-btn">
-          EXPLORE COLLECTION <ChevronRight size={16} />
-        </button>
-      </div>
-    </div>
-
-    {/* Slider Controls */}
-    <div onClick={prevSlide} className="home-hero-arrow home-hero-arrow--prev">
-      <ChevronLeft size={24} />
-    </div>
-    <div onClick={nextSlide} className="home-hero-arrow home-hero-arrow--next">
-      <ChevronRight size={24} />
-    </div>
-
-    <div className="home-hero-dots">
-      {slides.map((_, idx) => (
-        <div key={idx} onClick={() => setCurrentSlide(idx)} style={{ cursor: 'pointer', width: currentSlide === idx ? '20px' : '8px', height: currentSlide === idx ? '4px' : '8px', backgroundColor: currentSlide === idx ? 'var(--dark-bg)' : 'white', borderRadius: currentSlide === idx ? '2px' : '50%', opacity: currentSlide === idx ? 1 : 0.7, marginTop: currentSlide === idx ? '0' : '-2px', transition: 'all 0.3s ease' }}></div>
+    <section className="home-hero">
+      {slides.map((slide, index) => (
+        <div key={index} className="home-hero-slide" style={{
+          backgroundImage: `url(${slide.img})`,
+          opacity: currentSlide === index ? 1 : 0,
+          transform: currentSlide === index ? 'scale(1.05)' : 'scale(1)',
+          zIndex: currentSlide === index ? 0 : -1
+        }} />
       ))}
-    </div>
-  </section>
+
+      <div className="home-hero-overlay"></div>
+      {/* Subtle gold shimmer over the model area (approx right side) */}
+      <div className="hero-glow-overlay"></div>
+
+      <div className="container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+        {/* key={currentSlide} forces React to remount this div when slide changes, restarting CSS animations */}
+        <div className="home-hero-content" key={currentSlide}>
+          <p className="home-hero-subtitle">{slides[currentSlide].subtitle}</p>
+          <h1 className="home-hero-title">
+            <span className="home-hero-title-line">{slides[currentSlide].title1}</span><br />
+            <span className="home-hero-title-line">
+              {slides[currentSlide].midText}<span className="home-hero-title-accent">{slides[currentSlide].title2}</span>
+            </span>
+          </h1>
+          <p className="home-hero-desc">
+            {slides[currentSlide].desc}
+          </p>
+          <button className="home-hero-btn">
+            EXPLORE COLLECTION <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+
+      {/* Slider Controls */}
+      <div onClick={prevSlide} className="home-hero-arrow home-hero-arrow--prev">
+        <ChevronLeft size={24} />
+      </div>
+      <div onClick={nextSlide} className="home-hero-arrow home-hero-arrow--next">
+        <ChevronRight size={24} />
+      </div>
+
+      <div className="home-hero-dots">
+        {slides.map((_, idx) => (
+          <div key={idx} onClick={() => setCurrentSlide(idx)} style={{ cursor: 'pointer', width: currentSlide === idx ? '20px' : '8px', height: currentSlide === idx ? '4px' : '8px', backgroundColor: currentSlide === idx ? 'var(--dark-bg)' : 'white', borderRadius: currentSlide === idx ? '2px' : '50%', opacity: currentSlide === idx ? 1 : 0.7, marginTop: currentSlide === idx ? '0' : '-2px', transition: 'all 0.3s ease' }}></div>
+        ))}
+      </div>
+    </section>
   );
 };
 
@@ -558,24 +560,102 @@ const PromoBanners = () => (
 );
 
 
-const ProductCard = ({ img, title, weight, price, index }) => (
-  <div className="product-card" style={{ animationDelay: `${index * 0.15}s` }}>
-    <div className="product-card-img-container">
-      <span className="product-badge">NEW</span>
-      <img src={img} alt={title} className="product-img" />
-      <button className="product-wishlist-btn">
-        <Heart size={18} strokeWidth={2.5} />
+const ProductCard = ({
+  productId,
+  slug,
+  img,
+  title,
+  price,
+  oldPrice,
+  discount,
+  stock,
+  index,
+  onAddToCart,
+  isAdding,
+}) => {
+  const navigate = useNavigate();
+  const isOutOfStock = stock !== undefined && stock <= 0;
+
+  return (
+    <div
+      className="product-card"
+      style={{ animationDelay: `${index * 0.15}s`, cursor: "pointer" }}
+      onClick={() => navigate(`/product/${slug || "item"}/${productId}`)}
+    >
+      <div className="product-card-img-container">
+        {Number(discount) > 0 ? (
+          <span className="product-badge" style={{ backgroundColor: "#991b1b", color: "#fff" }}>
+            -{discount}%
+          </span>
+        ) : (
+          <span className="product-badge">NEW</span>
+        )}
+        <img
+          src={img}
+          alt={title}
+          className="product-img"
+          onError={(e) => {
+            e.target.src = "https://placehold.co/400x400/faf8f4/8b642f?text=Anugraha";
+          }}
+        />
+        <button
+          className="product-wishlist-btn"
+          onClick={async (e) => {
+            e.stopPropagation();
+            try {
+              const currentWish = JSON.parse(localStorage.getItem("customerWishlist") || "[]");
+              const exists = currentWish.some((w) => w._id === productId);
+              const updated = exists
+                ? currentWish.filter((w) => w._id !== productId)
+                : [...currentWish, { _id: productId, slug, name: title, price, images: [img] }];
+              localStorage.setItem("customerWishlist", JSON.stringify(updated));
+              window.dispatchEvent(new Event("wishlistUpdated"));
+
+              // Persist to backend if logged in
+              const customerId = getCustomerMongoId();
+              if (customerId) {
+                try {
+                  await toggleWishlistItem({ _id: productId, slug, name: title, price, images: [img] });
+                  await fetchCustomerWishlist();
+                } catch (apiErr) {
+                  console.warn("Wishlist API sync failed:", apiErr);
+                }
+              }
+            } catch (err) {
+              console.error(err);
+            }
+          }}
+        >
+          <Heart size={18} strokeWidth={2.5} />
+        </button>
+      </div>
+      <div className="product-card-info">
+        <h4 className="product-title">{title}</h4>
+        <div style={{ display: "flex", gap: "8px", alignItems: "baseline" }}>
+          <p className="product-price">₹{Number(price).toLocaleString("en-IN")}</p>
+          {Number(oldPrice) > Number(price) ? (
+            <p style={{ textDecoration: "line-through", color: "#999", fontSize: "0.82rem", margin: 0 }}>
+              ₹{Number(oldPrice).toLocaleString("en-IN")}
+            </p>
+          ) : null}
+        </div>
+        <p style={{ fontSize: "11px", fontWeight: "600", color: isOutOfStock ? "#b91c1c" : "#15803d", margin: "4px 0 0" }}>
+          {isOutOfStock ? "Out of Stock" : "In Stock"}
+        </p>
+      </div>
+      <button
+        className="product-add-cart-btn"
+        onClick={(e) => {
+          e.stopPropagation();
+          onAddToCart(productId);
+        }}
+        disabled={isAdding || isOutOfStock}
+      >
+        {isOutOfStock ? "OUT OF STOCK" : isAdding ? "ADDING..." : "ADD TO CART"}
       </button>
     </div>
-    <div className="product-card-info">
-      <h4 className="product-title">{title}</h4>
-      <p className="product-price">₹{price}</p>
-    </div>
-    <button className="product-add-cart-btn">
-      ADD TO CART
-    </button>
-  </div>
-);
+  );
+};
 
 const NewArrivals = () => {
   const scrollRef = React.useRef(null);
@@ -607,39 +687,110 @@ const NewArrivals = () => {
     }
   };
 
- const [products, setProducts] = useState([]);
-const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [addingProductId, setAddingProductId] = useState(null);
 
-useEffect(() => {
-  const fetchProducts = async () => {
+  const handleAddToCart = async (product) => {
+    const productId = product._id;
+    if (product.stock !== undefined && product.stock <= 0) {
+      alert("This item is currently out of stock.");
+      return;
+    }
+
     try {
-      const response = await api.get('/customers/products', {
-        params: {
-          page: 1,
-          limit: 6,
-          sort: 'newest',
-        },
-      });
+      setAddingProductId(productId);
 
-     if (response.data.success) {
-  console.log(
-  "Product images:",
-  response.data.data.map((product) => ({
-    name: product.name,
-    images: product.images[0],
-  }))
-);
-  setProducts(response.data.data);
-}
+      const user = JSON.parse(localStorage.getItem("customerUser") || "{}");
+      const customerMongoId = user.id || user._id;
+
+      if (customerMongoId) {
+        try {
+          await api.post("/customers/cart/add-cart", {
+            customerId: customerMongoId,
+            productId,
+            quantity: 1,
+          });
+        } catch (backendErr) {
+          console.warn("Backend add-cart fallback to local:", backendErr);
+        }
+      }
+
+      const baseUrl = import.meta.env.VITE_API_URL
+        ? import.meta.env.VITE_API_URL.replace("/api/v1", "")
+        : "http://localhost:5000";
+      const firstImg = product.images?.[0];
+      const imgSrc = firstImg
+        ? firstImg.startsWith("http")
+          ? firstImg
+          : `${baseUrl}${firstImg.startsWith("/") ? "" : "/"}${firstImg}`
+        : "";
+
+      const currentCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+      const existing = currentCart.find((item) => item._id === productId);
+
+      let updatedCart;
+      if (existing) {
+        updatedCart = currentCart.map((item) =>
+          item._id === productId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        updatedCart = [
+          ...currentCart,
+          {
+            _id: productId,
+            slug: product.slug,
+            name: product.name,
+            price: product.price,
+            image: imgSrc,
+            quantity: 1,
+          },
+        ];
+      }
+
+      localStorage.setItem("guestCart", JSON.stringify(updatedCart));
+      window.dispatchEvent(new Event("cartUpdated"));
+      alert(`"${product.name}" added to cart successfully!`);
     } catch (error) {
-      console.error('Failed to fetch products:', error);
+      console.error("Add to cart error:", error);
+      alert("Failed to add product to cart");
     } finally {
-      setLoading(false);
+      setAddingProductId(null);
     }
   };
 
-  fetchProducts();
-}, []);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get('/customers/products', {
+          params: {
+            page: 1,
+            limit: 6,
+            sort: 'newest',
+          },
+        });
+
+        if (response.data.success) {
+          console.log(
+            "Product images:",
+            response.data.data.map((product) => ({
+              name: product.name,
+              images: product.images[0],
+            }))
+          );
+          setProducts(response.data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <section className="new-arrivals-section" ref={sectionRef}>
@@ -650,31 +801,46 @@ useEffect(() => {
           ref={scrollRef}
           className={`new-arrivals-scroll ${isVisible ? 'animate-in' : ''}`}
         >
-        {products.map((product, index) => (
-  <div key={product._id} className="new-arrivals-item">
-    <ProductCard
-      index={index}
-      img={
-        product.images?.[0]?.startsWith("http")
-          ? product.images[0]
-          : `http://localhost:5000${product.images?.[0] || ""}`
-      }
-      title={product.name}
-      price={product.price}
-    />
-  </div>
-))}
-        <div
-          onClick={() => scroll('left')}
-          className="new-arrivals-arrow new-arrivals-arrow--left">
-          <ChevronLeft size={20} />
+          {products.map((product, index) => {
+            const baseUrl = import.meta.env.VITE_API_URL
+              ? import.meta.env.VITE_API_URL.replace("/api/v1", "")
+              : "http://localhost:5000";
+            const firstImg = product.images?.[0];
+            const imgSrc = firstImg
+              ? firstImg.startsWith("http")
+                ? firstImg
+                : `${baseUrl}${firstImg.startsWith("/") ? "" : "/"}${firstImg}`
+              : "https://placehold.co/400x400/faf8f4/8b642f?text=Anugraha";
+
+            return (
+              <div key={product._id} className="new-arrivals-item">
+                <ProductCard
+                  productId={product._id}
+                  slug={product.slug}
+                  index={index}
+                  img={imgSrc}
+                  title={product.name}
+                  price={product.price}
+                  oldPrice={product.oldPrice}
+                  discount={product.discount}
+                  stock={product.stock}
+                  onAddToCart={() => handleAddToCart(product)}
+                  isAdding={addingProductId === product._id}
+                />
+              </div>
+            );
+          })}
+          <div
+            onClick={() => scroll('left')}
+            className="new-arrivals-arrow new-arrivals-arrow--left">
+            <ChevronLeft size={20} />
+          </div>
+          <div
+            onClick={() => scroll('right')}
+            className="new-arrivals-arrow new-arrivals-arrow--right">
+            <ChevronRight size={20} />
+          </div>
         </div>
-        <div
-          onClick={() => scroll('right')}
-          className="new-arrivals-arrow new-arrivals-arrow--right">
-          <ChevronRight size={20} />
-        </div>
-      </div>
       </div>
     </section>
   );
@@ -700,7 +866,7 @@ const TrustBanner = () => {
 
   return (
     <section className="container" style={{ marginTop: '4rem', marginBottom: '4rem' }} ref={sectionRef}>
-      
+
       {/* ── Section Introduction ── */}
       <div className={`trust-intro ${isVisible ? 'trust-visible' : ''}`}>
         <h3 className="trust-intro-title">THE ANUGRAHA PROMISE</h3>
@@ -813,12 +979,12 @@ const SocialAndTestimonial = () => {
           <h3 style={{ fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.2rem', letterSpacing: '1.5px', color: '#2c1a0e' }}>FOLLOW OUR JOURNEY</h3>
           <p style={{ fontSize: '0.7rem', color: '#9a8a78', marginBottom: '1rem' }}>@anugrahafashions</p>
           <div className="social-insta-grid">
-            <img src={footerNecklaceImg}  alt="Insta 1" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
-            <img src={footerEaringsImg}   alt="Insta 2" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
-            <img src={footerBanglesImg}   alt="Insta 3" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
-            <img src={footerRingsImg}     alt="Insta 4" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
-            <img src={footerPendantImg}   alt="Insta 5" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
-            <img src={footerBridalImg}    alt="Insta 6" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
+            <img src={footerNecklaceImg} alt="Insta 1" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
+            <img src={footerEaringsImg} alt="Insta 2" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
+            <img src={footerBanglesImg} alt="Insta 3" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
+            <img src={footerRingsImg} alt="Insta 4" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
+            <img src={footerPendantImg} alt="Insta 5" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
+            <img src={footerBridalImg} alt="Insta 6" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '5px' }} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
             {/* Instagram icon */}
@@ -854,20 +1020,20 @@ const SocialAndTestimonial = () => {
 
         {/* ── Right: Model Image ── */}
         <div className="social-right" style={{ position: 'relative', overflow: 'hidden' }}>
-          <img 
-            src={footerBridalImg} 
-            alt="Happy Customer" 
-            style={{ 
-              position: 'absolute', 
-              top: '-15%', 
-              left: 0, 
-              width: '100%', 
-              height: '130%', 
-              objectFit: 'cover', 
+          <img
+            src={footerBridalImg}
+            alt="Happy Customer"
+            style={{
+              position: 'absolute',
+              top: '-15%',
+              left: 0,
+              width: '100%',
+              height: '130%',
+              objectFit: 'cover',
               objectPosition: 'center top',
               transform: `translateY(${parallaxY}px)`,
               willChange: 'transform'
-            }} 
+            }}
           />
           {/* Gradient fade from testimonial bg into the image */}
           <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '50px', background: 'linear-gradient(to right, #fcf9f2, transparent)', zIndex: 1 }}></div>

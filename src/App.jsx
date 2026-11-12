@@ -2,6 +2,11 @@
 import React from 'react';
 import { Routes, Route, Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import AdminLayout from './pages/Admin/AdminLayout';
+import Register from "./pages/Register/Register";
+import Login from "./pages/Login/Login";
+import Profile from "./pages/Profile/Profile";
+import Wishlist from "./pages/Wishlist/Wishlist";
+import { fetchCustomerWishlist } from "./services/wishlistService";
 import Dashboard from './pages/Admin/Dashboard';
 import Category from './pages/Admin/Category';
 import SearchPage from "./pages/Search/Search";
@@ -71,6 +76,16 @@ const Header = () => {
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
   const [openSubmenu, setOpenSubmenu] = React.useState(null);
 
+  // Wishlist count from localStorage / API
+  const [wishlistCount, setWishlistCount] = React.useState(() => {
+    try {
+      const items = JSON.parse(localStorage.getItem("customerWishlist") || "[]");
+      return Array.isArray(items) ? items.length : 0;
+    } catch {
+      return 0;
+    }
+  });
+
   // Cart count from localStorage
   const [cartCount, setCartCount] = React.useState(() => {
     try {
@@ -99,12 +114,31 @@ const Header = () => {
       }
     };
 
+    const updateWishlistCount = () => {
+      try {
+        const items = JSON.parse(localStorage.getItem("customerWishlist") || "[]");
+        setWishlistCount(Array.isArray(items) ? items.length : 0);
+      } catch {
+        setWishlistCount(0);
+      }
+    };
+
+    if (localStorage.getItem("customerToken")) {
+      fetchCustomerWishlist().catch(() => {});
+    }
+
     window.addEventListener("cartUpdated", updateCartCount);
+    window.addEventListener("wishlistUpdated", updateWishlistCount);
+    window.addEventListener("authChanged", updateWishlistCount);
     window.addEventListener("storage", updateCartCount);
+    window.addEventListener("storage", updateWishlistCount);
 
     return () => {
       window.removeEventListener("cartUpdated", updateCartCount);
+      window.removeEventListener("wishlistUpdated", updateWishlistCount);
+      window.removeEventListener("authChanged", updateWishlistCount);
       window.removeEventListener("storage", updateCartCount);
+      window.removeEventListener("storage", updateWishlistCount);
     };
   }, []);
 
@@ -229,12 +263,46 @@ const Header = () => {
             <Search size={18} className="search-icon" />
           </div>
 
-          <div className="header-icon-animate">
-            <User size={18} style={{ cursor: 'pointer' }} />
+          <div
+            className="header-icon-animate"
+            onClick={() => {
+              const token = localStorage.getItem("customerToken");
+              navigate(token ? "/profile" : "/login");
+            }}
+            style={{ cursor: "pointer" }}
+            title="Profile"
+          >
+            <User size={18} />
           </div>
 
-          <div className="header-icon-animate">
-            <Heart size={18} style={{ cursor: 'pointer' }} />
+          <div
+            className="header-icon-animate"
+            style={{ position: 'relative', cursor: 'pointer' }}
+            onClick={() => navigate("/wishlist")}
+            title="Wishlist"
+          >
+            <Heart size={18} />
+            {wishlistCount > 0 && (
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-6px',
+                  right: '-8px',
+                  backgroundColor: 'var(--primary-gold)',
+                  color: '#111',
+                  fontSize: '0.6rem',
+                  fontWeight: 'bold',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                {wishlistCount}
+              </span>
+            )}
           </div>
 
           {/* Cart Icon with Dynamic Count */}
@@ -386,6 +454,22 @@ const Header = () => {
           >
             CONTACT US
           </Link>
+
+          <Link
+            to="/wishlist"
+            className={`mobile-nav-link ${location.pathname === '/wishlist' ? 'active' : ''}`}
+            onClick={closeMenu}
+          >
+            WISHLIST {wishlistCount > 0 ? `(${wishlistCount})` : ''}
+          </Link>
+
+          <Link
+            to={localStorage.getItem("customerToken") ? "/profile" : "/login"}
+            className={`mobile-nav-link ${location.pathname === '/profile' ? 'active' : ''}`}
+            onClick={closeMenu}
+          >
+            MY PROFILE
+          </Link>
         </nav>
 
         <div className="mobile-nav-footer">
@@ -400,7 +484,49 @@ const Header = () => {
   );
 };
 
-const Footer = () => (
+const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Handle scroll-to-new-arrivals after navigation from another page
+  React.useEffect(() => {
+    if (
+      location.pathname === '/' &&
+      location.state?.scrollTo === 'new-arrivals'
+    ) {
+      let attempts = 0;
+      const timer = setInterval(() => {
+        attempts++;
+        const el = document.querySelector('.new-arrivals-section');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          clearInterval(timer);
+        } else if (attempts > 30) {
+          clearInterval(timer);
+        }
+      }, 100);
+      return () => clearInterval(timer);
+    }
+  }, [location.pathname, location.state]);
+
+  const handleNewArrivalsClick = (e) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      const el = document.querySelector('.new-arrivals-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/', { state: { scrollTo: 'new-arrivals' } });
+    }
+  };
+
+  const socialLinks = [
+    { label: 'f', href: 'https://www.facebook.com/anugrahafashions', title: 'Facebook' },
+    { label: 'in', href: 'https://instagram.com/anugrahafashions', title: 'Instagram' },
+    { label: 'yt', href: 'https://www.youtube.com/@anugrahafashions', title: 'YouTube' },
+    { label: 'tw', href: 'https://twitter.com/anugrahafashions', title: 'Twitter' },
+  ];
+
+  return (
   <footer className="app-footer">
     <div className="container footer-top">
       <div className="footer-grid">
@@ -412,8 +538,22 @@ const Footer = () => (
             Timeless jewellery crafted with passion,<br />purity &amp; perfection. Designed to<br /><em>celebrate every moment</em> of your life.
           </p>
           <div style={{ display: 'flex', gap: '0.6rem' }}>
-            {['f', 'in', 'yt', 'tw'].map((s, i) => (
-              <div key={i} style={{ width: '28px', height: '28px', border: '1px solid #3a2e22', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.65rem', color: '#c9a84c', fontWeight: 'bold' }}>{s}</div>
+            {socialLinks.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={item.title}
+                style={{
+                  width: '28px', height: '28px', border: '1px solid #3a2e22',
+                  borderRadius: '50%', display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', cursor: 'pointer', fontSize: '0.65rem',
+                  color: '#c9a84c', fontWeight: 'bold', textDecoration: 'none',
+                }}
+              >
+                {item.label}
+              </a>
             ))}
           </div>
         </div>
@@ -423,7 +563,7 @@ const Footer = () => (
           <h4 style={{ color: 'var(--primary-gold)', marginBottom: '1.2rem', letterSpacing: '1px', fontSize: '0.78rem', fontWeight: '700' }}>SHOP</h4>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.55rem', fontSize: '0.73rem' }}>
             {['All Jewellery', 'Necklaces', 'Earrings', 'Rings', 'Bangles', 'Pendants', 'Bridal Sets'].map(item => (
-              <li key={item}><a href={item === 'Contact Us' ? '/contact' : '#'} style={{ color: '#9a8a78', textDecoration: 'none' }}>{item}</a></li>
+              <li key={item}><a href="#" style={{ color: '#9a8a78', textDecoration: 'none' }}>{item}</a></li>
             ))}
           </ul>
         </div>
@@ -433,7 +573,19 @@ const Footer = () => (
           <h4 style={{ color: 'var(--primary-gold)', marginBottom: '1.2rem', letterSpacing: '1px', fontSize: '0.78rem', fontWeight: '700' }}>COLLECTIONS</h4>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.55rem', fontSize: '0.73rem' }}>
             {['New Arrivals', 'Best Sellers', 'Bridal Collection', 'Traditional Collection', 'Gift Collection', 'Festive Collection'].map(item => (
-              <li key={item}><a href="#" style={{ color: '#9a8a78', textDecoration: 'none' }}>{item}</a></li>
+              <li key={item}>
+                {item === 'New Arrivals' ? (
+                  <a
+                    href="/#new-arrivals"
+                    onClick={handleNewArrivalsClick}
+                    style={{ color: '#9a8a78', textDecoration: 'none', cursor: 'pointer' }}
+                  >
+                    {item}
+                  </a>
+                ) : (
+                  <a href="#" style={{ color: '#9a8a78', textDecoration: 'none' }}>{item}</a>
+                )}
+              </li>
             ))}
           </ul>
         </div>
@@ -443,7 +595,27 @@ const Footer = () => (
           <h4 style={{ color: 'var(--primary-gold)', marginBottom: '1.2rem', letterSpacing: '1px', fontSize: '0.78rem', fontWeight: '700' }}>CUSTOMER CARE</h4>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.55rem', fontSize: '0.73rem' }}>
             {['About Us', 'Contact Us', 'Shipping Policy', 'Return Policy', "FAQ's", 'Track Order'].map(item => (
-              <li key={item}><a href="#" style={{ color: '#9a8a78', textDecoration: 'none' }}>{item}</a></li>
+              <li key={item}>
+                {item === 'About Us' ? (
+                  <Link
+                    to="/about"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    style={{ color: '#9a8a78', textDecoration: 'none' }}
+                  >
+                    {item}
+                  </Link>
+                ) : item === 'Contact Us' ? (
+                  <Link
+                    to="/contact"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    style={{ color: '#9a8a78', textDecoration: 'none' }}
+                  >
+                    {item}
+                  </Link>
+                ) : (
+                  <a href="#" style={{ color: '#9a8a78', textDecoration: 'none' }}>{item}</a>
+                )}
+              </li>
             ))}
           </ul>
         </div>
@@ -483,7 +655,8 @@ const Footer = () => (
       </div>
     </div>
   </footer>
-);
+  );
+};
 
 const MainLayout = () => (
   <div>
@@ -499,6 +672,10 @@ export default function App() {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route path="contact" element={<Contact />} />
         <Route path="about" element={<About />} />
         <Route path="search" element={<SearchPage />} />

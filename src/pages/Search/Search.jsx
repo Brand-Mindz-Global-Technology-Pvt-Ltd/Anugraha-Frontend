@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react";
 import api from "../../services/api";
+import { toggleWishlistItem, getCustomerMongoId, fetchCustomerWishlist } from "../../services/wishlistService";
 import "./Search.css";
 
 const Search = () => {
@@ -48,7 +49,7 @@ const Search = () => {
     }
   };
 
-  const toggleWishlist = (e, product) => {
+  const toggleWishlist = async (e, product) => {
     e.stopPropagation();
 
     const alreadySaved = wishlist.some(
@@ -66,6 +67,17 @@ const Search = () => {
     );
 
     window.dispatchEvent(new Event("wishlistUpdated"));
+
+    // Persist to backend if logged in
+    const customerId = getCustomerMongoId();
+    if (customerId) {
+      try {
+        await toggleWishlistItem(product);
+        await fetchCustomerWishlist();
+      } catch (apiErr) {
+        console.warn("Search wishlist API sync failed:", apiErr);
+      }
+    }
   };
 
   return (
@@ -126,7 +138,7 @@ const Search = () => {
                       src={
                         product.images?.[0]?.startsWith("http")
                           ? product.images[0]
-                          : `http://localhost:5000${product.images?.[0] || ""}`
+                          : `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace("/api/v1", "") : "http://localhost:5000"}${product.images?.[0] || ""}`
                       }
                       alt={product.name}
                     />
